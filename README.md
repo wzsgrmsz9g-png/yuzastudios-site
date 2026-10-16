@@ -19,6 +19,14 @@ Static website for [yuzastudios.com](https://yuzastudios.com): studio home, app 
 
 Support email: [support@yuzastudios.com](mailto:support@yuzastudios.com)
 
+## App Store status
+
+`data/apps.json` is the only place that decides whether an app is live. Set `live` to `true` on an app that already has an `appleId` and the page renders Apple’s official black Download on the App Store badge, unmodified, linking to `https://apps.apple.com/app/id<appleId>`. Any other state shows the text “Coming soon to the App Store” and does not link to the store. As of 16 October 2026 every app is `live: false` (Chroma Clear and Receiptly still have no Apple ID).
+
+The page is dark navy on every screen: `#0E1420` background, `#161D2B` cards, `#12192A` bands. Text is `#F4F7FB`, secondary text is `#C5D0E0`, links and kickers are yellow `#F5B82E`, and focus rings are `#9DCCFF`. The header and footer use `svg/yuza-lockup-dark.svg` (the light lockup is for print). The mark is shown with the wordmark everywhere except the favicon, apple-touch icon, and social image. Forge’s marketing frames stay on a light plate.
+
+Screenshots and icons are the real files in `assets/apps/`. Forge’s images are already marketing frames, so the site does not put them inside a second phone. Receiptly has an icon and no screenshots. `js/site.js` adds scroll reveals, staggered card entrances, and a slight parallax on the hero phones. It does not set cookies or call the network. With reduced motion, or if the script does not run, the content stays still and visible.
+
 ## Porkbun DNS
 
 At Porkbun, for `yuzastudios.com`, publish these records so the apex domain and `www` point at GitHub Pages:

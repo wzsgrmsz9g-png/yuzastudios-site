@@ -1,0 +1,14 @@
+{
+  "badge": {
+    "src": "assets/badges/download-on-the-app-store.svg",
+    "width": 120,
+    "height": 40
+  },
+  "apps": [
+    { "slug": "forge", "appleId": "6816285160", "live": false },
+    { "slug": "cantotalk", "appleId": "6812961427", "live": false },
+    { "slug": "littleatlas", "appleId": "6815871041", "live": false },
+    { "slug": "receiptly", "appleId": null, "live": false },
+    { "slug": "chromaclear", "appleId": null, "live": false }
+  ]
+}
