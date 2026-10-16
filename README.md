@@ -23,9 +23,7 @@ Support email: [support@yuzastudios.com](mailto:support@yuzastudios.com)
 
 `data/apps.json` is the only place that decides whether an app is live. Set `live` to `true` on an app that already has an `appleId` and the page renders Apple’s official black Download on the App Store badge, unmodified, linking to `https://apps.apple.com/app/id<appleId>`. Any other state shows the text “Coming soon to the App Store” and does not link to the store. As of 16 October 2026 every app is `live: false` (Chroma Clear and Receiptly still have no Apple ID).
 
-The header and footer use the approved lockup (`svg/yuza-lockup-light.svg` on light grounds, `svg/yuza-lockup-dark.svg` on dark). The mark is shown with the wordmark everywhere except the favicon, apple-touch icon, and social image. Brand yellow is `#F5B82E` and navy is `#1B2440`. Light text accents use navy; dark text accents use yellow.
-
-Background themes are CSS variables on `html`. Leave `data-theme` unset for the current warm page. `data-theme="a"` is white with cool-grey bands (`#FFFFFF` / `#F5F6F8`). `data-theme="b"` is dark navy (`#0E1420` page, `#161D2B` cards). `data-theme="c"` is a citrus wash (`#FFFBEF` page, white cards, navy accent).
+The page is dark navy on every screen: `#0E1420` background, `#161D2B` cards, `#12192A` bands. Text is `#F4F7FB`, secondary text is `#C5D0E0`, links and kickers are yellow `#F5B82E`, and focus rings are `#9DCCFF`. The header and footer use `svg/yuza-lockup-dark.svg` (the light lockup is for print). The mark is shown with the wordmark everywhere except the favicon, apple-touch icon, and social image. Forge’s marketing frames stay on a light plate.
 
 Screenshots and icons are the real files in `assets/apps/`. Forge’s images are already marketing frames, so the site does not put them inside a second phone. Receiptly has an icon and no screenshots. `js/site.js` adds scroll reveals, staggered card entrances, and a slight parallax on the hero phones. It does not set cookies or call the network. With reduced motion, or if the script does not run, the content stays still and visible.
 

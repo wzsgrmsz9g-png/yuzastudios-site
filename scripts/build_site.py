@@ -712,9 +712,9 @@ def home_body(prefix: str) -> str:
       <div class="home">
         <section class="hero">
           <div class="hero-copy reveal">
-            <p class="kicker">Tiny indie studio</p>
-            <h1>Small iOS apps and digital products.</h1>
-            <p class="lede">YuZa Studio is a tiny indie studio. Open an app for a short introduction, its privacy page, and its support page.</p>
+            <p class="kicker">YuZa Studio</p>
+            <h1>Thoughtfully crafted apps for everyday life.</h1>
+            <p class="lede">We design polished iPhone apps for fitness, language learning, family adventures and play. Each one is built with care and respects your privacy.</p>
           </div>
           {home_hero_stage(prefix)}
         </section>
@@ -803,7 +803,7 @@ def build(dest: Path) -> None:
         dest / "index.html",
         chrome(
             title="YuZa Studio",
-            description="YuZa Studio is a tiny indie studio making iOS apps and digital products.",
+            description="We design polished iPhone apps for fitness, language learning, family adventures and play. Each one is built with care and respects your privacy.",
             canonical_path="",
             depth=0,
             current="home",

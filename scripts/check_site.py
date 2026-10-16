@@ -104,58 +104,35 @@ def resolve_href(page: Path, href: str, root: Path) -> Path | None:
     return target
 
 
-def css_variables(css: str) -> tuple[dict[str, str], dict[str, str]]:
+def css_variables(css: str) -> dict[str, str]:
     root = re.search(r":root \{([^}]+)\}", css)
-    dark = re.search(
-        r"@media \(prefers-color-scheme: dark\) \{\s*:root \{([^}]+)\}",
-        css,
-    )
-    if not root or not dark:
+    if not root:
         fail("CSS is missing :root color tokens")
-        return {}, {}
-
-    def grab(block: str) -> dict[str, str]:
-        return dict(re.findall(r"(--[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block))
-
-    return grab(root.group(1)), grab(dark.group(1))
+        return {}
+    if re.search(r"@media \(prefers-color-scheme: dark\) \{\s*:root \{", css):
+        fail("CSS still overrides the navy palette for a second color scheme")
+    if re.search(r'data-theme=', css):
+        fail("CSS still switches background themes")
+    return dict(re.findall(r"(--[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", root.group(1)))
 
 
 def check_contrast(css: str) -> None:
-    light, dark = css_variables(css)
-    pairs = [
-        ("--ink", "--bg", 4.5),
-        ("--muted", "--bg", 4.5),
-        ("--muted", "--surface", 4.5),
-        ("--accent", "--bg", 4.5),
-        ("--accent", "--surface", 4.5),
-        ("--focus", "--bg", 3.0),
-    ]
-    for theme, tokens in (("light", light), ("dark", dark)):
-        for fg, bg, minimum in pairs:
-            if fg not in tokens or bg not in tokens:
-                fail(f"missing {theme} token {fg} or {bg}")
-                continue
-            ratio = contrast(tokens[fg], tokens[bg])
-            if ratio < minimum:
-                fail(f"{theme} {fg} on {bg} contrast {ratio:.2f} < {minimum}")
-    for name in ("--forge", "--canto", "--atlas", "--receipt", "--chroma"):
-        if name not in light:
-            fail(f"missing mark color {name}")
-            continue
-        ratio = contrast("#ffffff", light[name])
-        if ratio < 4.5:
-            fail(f"white on {name} contrast {ratio:.2f} < 4.5")
-    check_theme_variants(css)
-
-
-def check_theme_variants(css: str) -> None:
-    expected = {
-        "a": {"--bg": "#ffffff", "--section": "#f5f6f8", "--surface": "#ffffff"},
-        "b": {"--bg": "#0e1420", "--surface": "#161d2b"},
-        "c": {"--bg": "#fffbef", "--surface": "#ffffff"},
+    tokens = css_variables(css)
+    required = {
+        "--bg": "#0e1420",
+        "--surface": "#161d2b",
+        "--section": "#12192a",
+        "--ink": "#f4f7fb",
+        "--muted": "#c5d0e0",
+        "--accent": "#f5b82e",
+        "--focus": "#9dccff",
     }
+    for key, value in required.items():
+        if tokens.get(key, "").lower() != value:
+            fail(f"{key} is {tokens.get(key)}, expected {value}")
     pairs = [
         ("--ink", "--bg", 4.5),
+        ("--ink", "--surface", 4.5),
         ("--ink", "--section", 4.5),
         ("--muted", "--bg", 4.5),
         ("--muted", "--surface", 4.5),
@@ -164,26 +141,25 @@ def check_theme_variants(css: str) -> None:
         ("--accent", "--surface", 4.5),
         ("--accent", "--section", 4.5),
         ("--focus", "--bg", 3.0),
+        ("--focus", "--surface", 3.0),
+        ("--focus", "--section", 3.0),
     ]
-    for name, required in expected.items():
-        match = re.search(rf'html\[data-theme="{name}"\] \{{([^}}]+)\}}', css)
-        if not match:
-            fail(f"missing background theme {name}")
+    for fg, bg, minimum in pairs:
+        if fg not in tokens or bg not in tokens:
+            fail(f"missing token {fg} or {bg}")
             continue
-        tokens = {
-            key.lower(): value.lower()
-            for key, value in re.findall(r"(--[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", match.group(1))
-        }
-        for key, value in required.items():
-            if tokens.get(key) != value:
-                fail(f"theme {name} {key} is {tokens.get(key)}, expected {value}")
-        for fg, bg, minimum in pairs:
-            if fg not in tokens or bg not in tokens:
-                fail(f"theme {name} missing {fg} or {bg}")
-                continue
-            ratio = contrast(tokens[fg], tokens[bg])
-            if ratio < minimum:
-                fail(f"theme {name} {fg} on {bg} contrast {ratio:.2f} < {minimum}")
+        ratio = contrast(tokens[fg], tokens[bg])
+        if ratio < minimum:
+            fail(f"{fg} on {bg} contrast {ratio:.2f} < {minimum}")
+    for name in ("--forge", "--canto", "--atlas", "--receipt", "--chroma"):
+        if name not in tokens:
+            fail(f"missing mark color {name}")
+            continue
+        ratio = contrast("#ffffff", tokens[name])
+        if ratio < 4.5:
+            fail(f"white on {name} contrast {ratio:.2f} < 4.5")
+    if "#f7f4ee" not in css:
+        fail("Forge marketing plates are no longer the light plate")
 
 
 def check_generated(module) -> None:
@@ -299,6 +275,18 @@ def check_html(pages: list[Path]) -> None:
             fail(f"{rel} missing twitter card")
         if 'name="theme-color" content="#1B2440"' not in text:
             fail(f"{rel} missing navy theme-color")
+        if re.search(r"\b(tiny|indie)\b", text, re.IGNORECASE):
+            fail(f"{rel} still describes the studio as tiny or indie")
+        if re.search(r"Small iOS apps", text):
+            fail(f"{rel} still uses the old headline")
+        if page == ROOT / "index.html":
+            for bit in (
+                '<p class="kicker">YuZa Studio</p>',
+                "Thoughtfully crafted apps for everyday life.",
+                "We design polished iPhone apps for fitness, language learning, family adventures and play. Each one is built with care and respects your privacy.",
+            ):
+                if bit not in text:
+                    fail(f"home is missing the new positioning: {bit}")
         if "support@yuzastudios.com" not in text and page.name != "404.html":
             # 404 may still include the footer email. Require it everywhere.
             pass
