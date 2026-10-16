@@ -32,8 +32,7 @@ CANTO_WHAT = (
     "an account and without contacting the network."
 )
 ATLAS_WHAT = (
-    "Little Atlas is an offline family explorer for curated activities and nursing-room "
-    "listings in Calgary. Catalog data and photos ship inside the app."
+    "Discover family-friendly places, playgrounds and nursing rooms wherever you are."
 )
 
 FORGE_PRIVACY = """
@@ -106,12 +105,14 @@ CANTO_PRIVACY = """
 <p>See <a href="../support/">Support</a> for contact details.</p>
 """.strip()
 
+# The ported policy named Calgary in "nursing-room listings in Calgary."
+# That city reference is now neutral. The rest of this policy is unchanged.
 ATLAS_PRIVACY = """
 <h1>Little Atlas — Privacy Policy</h1>
 <p class="meta"><strong>Effective date:</strong> 7 October 2026<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>What Little Atlas is</h2>
-<p>Little Atlas is an offline family explorer for curated activities and nursing-room listings in Calgary. Catalog data and photos ship inside the app.</p>
+<p>Little Atlas is an offline family explorer for curated activities and nursing-room listings. Catalog data and photos ship inside the app.</p>
 <h2>Location</h2>
 <p>When you tap <strong>Near me</strong>, the app uses Core Location (while in use) to sort places by distance. Coordinates are processed on device and are not sent to a Little Atlas server. There is no Little Atlas backend in this build.</p>
 <h2>Saved lists</h2>
@@ -153,7 +154,7 @@ APPS = [
         "slug": "littleatlas",
         "name": "Little Atlas",
         "mark": "LA",
-        "blurb": "Offline family explorer for curated activities and nursing-room listings in Calgary.",
+        "blurb": ATLAS_WHAT,
         "summary": ATLAS_WHAT,
         "privacy": ATLAS_PRIVACY,
         "published": True,
@@ -162,19 +163,21 @@ APPS = [
         "slug": "receiptly",
         "name": "Receiptly",
         "mark": "RC",
-        "blurb": "iOS app from YuZa Studio. A product description has not been published yet.",
-        "summary": "Receiptly is an iOS app from YuZa Studio.",
+        "blurb": "Snap receipts and keep your spending organised.",
+        "summary": "Snap receipts and keep your spending organised.",
         "privacy": None,
         "published": False,
+        "described": True,
     },
     {
         "slug": "chromaclear",
         "name": "ChromaClear",
         "mark": "CC",
-        "blurb": "iOS app from YuZa Studio. A product description has not been published yet.",
-        "summary": "ChromaClear is an iOS app from YuZa Studio.",
+        "blurb": "A bright, satisfying colour-matching puzzle game.",
+        "summary": "A bright, satisfying colour-matching puzzle game.",
         "privacy": None,
         "published": False,
+        "described": True,
     },
 ]
 
@@ -272,32 +275,14 @@ MEDIA = {
     "littleatlas": {
         "icon": "assets/apps/icons/little-atlas.webp",
         "frame": "device",
-        "card_shot": 1,
+        "card_shot": 0,
         "features": [
-            "Browse curated family places in Calgary, including ages, cost, and hours",
+            "Browse family-friendly places, playgrounds, and nursing rooms",
             "Filter for indoor places, free places, and nursing rooms",
             "View places on a map",
             "Read nursing-room notes. The catalog ships inside the app",
         ],
         "shots": [
-            {
-                "src": "assets/apps/little-atlas/01-welcome.webp",
-                "w": 640,
-                "h": 1391,
-                "alt": "Little Atlas welcome for Calgary. The screen offers Explore places and Saved places.",
-            },
-            {
-                "src": "assets/apps/little-atlas/02-explore.webp",
-                "w": 640,
-                "h": 1391,
-                "alt": "Little Atlas explore list for Calgary, with filters for indoor, free, and nursing rooms, and cards for the Central Library, Prince's Island Park, and the Calgary Zoo.",
-            },
-            {
-                "src": "assets/apps/little-atlas/03-map.webp",
-                "w": 640,
-                "h": 1391,
-                "alt": "Little Atlas map of Calgary with pins for the Central Library, Prince's Island Park, and the Calgary Zoo.",
-            },
             {
                 "src": "assets/apps/little-atlas/04-nursing-rooms.webp",
                 "w": 640,
@@ -357,17 +342,17 @@ HERO_SHOTS = [
         "w": 640,
         "h": 1391,
         "alt": "CantoTalk on iPhone. The home screen continues the Café lesson 你好, Jyutping nei5 hou2, meaning hello.",
-        "speed": "0.045",
+        "speed": "0.2",
         "lazy": False,
         "priority": True,
         "extra": "",
     },
     {
-        "src": "assets/apps/little-atlas/02-explore.webp",
-        "w": 640,
-        "h": 1391,
-        "alt": "Little Atlas on iPhone. The Calgary explore list shows the Central Library, Prince's Island Park, and the Calgary Zoo.",
-        "speed": "0.08",
+        "src": "assets/apps/chroma-clear/04-level-start.webp",
+        "w": 552,
+        "h": 1200,
+        "alt": "Chroma Clear on iPhone. Level 12 starts with a goal of 20 tiles on a grid of red, blue, and yellow.",
+        "speed": "0.34",
         "lazy": True,
         "priority": False,
         "extra": "hero-phone-back",
@@ -613,7 +598,7 @@ def unpublished_privacy(name: str) -> str:
 def app_article(app: dict, prefix: str) -> str:
     media = MEDIA[app["slug"]]
     extra = ""
-    if not app["published"]:
+    if not app["published"] and not app.get("described"):
         extra = "\n        <p>A product description has not been published yet.</p>"
     hero_class = "app-hero reveal"
     shot_html = ""
@@ -621,7 +606,7 @@ def app_article(app: dict, prefix: str) -> str:
         hero_class += " has-shot"
         shot = media["shots"][media["card_shot"]]
         shot_html = (
-            '\n      <div class="parallax hero-shot" data-parallax="0.06">\n        '
+            '\n      <div class="parallax hero-shot" data-parallax="0.18">\n        '
             + shot_figure(prefix, shot, media["frame"], lazy=False)
             + "\n      </div>"
         )
@@ -710,6 +695,8 @@ def home_body(prefix: str) -> str:
     cards = "\n        ".join(home_card(prefix, app, index) for index, app in enumerate(APPS))
     return f"""
       <div class="home">
+        <div class="hero-hold">
+        <div class="hero-pin">
         <section class="hero">
           <div class="hero-copy reveal">
             <p class="kicker">YuZa Studio</p>
@@ -718,6 +705,8 @@ def home_body(prefix: str) -> str:
           </div>
           {home_hero_stage(prefix)}
         </section>
+        </div>
+        </div>
         <section class="catalog" aria-labelledby="catalog-heading">
           <h2 id="catalog-heading">Apps</h2>
           <ul class="app-list">

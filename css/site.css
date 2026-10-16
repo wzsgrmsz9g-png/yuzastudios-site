@@ -842,22 +842,90 @@ main:focus {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  html.js .hero-pin {
+    position: sticky;
+    top: 4.75rem;
+    z-index: 1;
+  }
+
+  html.js .hero {
+    transform-origin: center top;
+  }
+
+  html.js .hero-hold {
+    padding-bottom: 22vh;
+  }
+
+  html.js .home > :not(.hero-hold) {
+    position: relative;
+    z-index: 2;
+  }
+
   html.js .reveal:not(.is-in) {
     opacity: 0;
-    transform: translateY(0.85rem);
+    transform: translate3d(0, 3.25rem, 0) scale(0.94);
+  }
+
+  html.js .app-list > .reveal:not(.is-in):nth-child(odd) {
+    transform: translate3d(-6rem, 2.5rem, 0) scale(0.94);
+  }
+
+  html.js .app-list > .reveal:not(.is-in):nth-child(even) {
+    transform: translate3d(6rem, 2.5rem, 0) scale(0.94);
   }
 
   html.js .reveal.is-in {
     opacity: 1;
     transform: none;
     transition:
-      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: calc(var(--stagger, 0) * 75ms);
+      opacity 0.98s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.98s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--stagger, 0) * 80ms);
   }
 
   html.js .reveal.is-in:focus-within {
     transition-delay: 0s;
+  }
+
+  html.js .reveal:not(.is-in) .frame-device,
+  html.js .reveal:not(.is-in) .frame-plate {
+    opacity: 0;
+    transform: translate3d(0, 3.25rem, 0) rotate(-8deg) scale(0.94);
+  }
+
+  html.js .reveal:not(.is-in) .parallax:nth-child(even) .frame-device,
+  html.js .reveal:not(.is-in) .gallery > .frame-device:nth-child(even),
+  html.js .reveal:not(.is-in) .gallery > .frame-plate:nth-child(even) {
+    transform: translate3d(0, 3.25rem, 0) rotate(8deg) scale(0.94);
+  }
+
+  html.js .reveal.is-in .frame-device,
+  html.js .reveal.is-in .frame-plate {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html.js .reveal:not(.is-in) .word,
+  html.js .word-reveal.reveal:not(.is-in) .word {
+    opacity: 0;
+    transform: translate3d(0, 1.15rem, 0);
+  }
+
+  html.js .reveal.is-in .word,
+  html.js .word-reveal.reveal.is-in .word {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .word {
+    display: inline-block;
   }
 }
 
@@ -866,14 +934,29 @@ main:focus {
     scroll-behavior: auto;
   }
 
+  .hero,
+  .hero-pin,
+  .gallery,
   .reveal,
   .parallax,
+  .frame-device,
+  .frame-plate,
+  .word,
   html.js .reveal,
-  html.js .reveal.is-in {
+  html.js .reveal.is-in,
+  html.js .hero {
     opacity: 1;
     transform: none;
     transition: none;
     animation: none;
+  }
+
+  html.js .hero-pin {
+    position: static;
+  }
+
+  html.js .hero-hold {
+    padding-bottom: 0;
   }
 }
 
@@ -895,6 +978,16 @@ main:focus {
 
   .app-icon {
     background: Canvas;
+  }
+
+  .reveal,
+  .word,
+  .frame-device,
+  .frame-plate,
+  .hero,
+  .gallery {
+    opacity: 1;
+    transform: none;
   }
 }
 
