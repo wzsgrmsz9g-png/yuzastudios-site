@@ -145,6 +145,45 @@ def check_contrast(css: str) -> None:
         ratio = contrast("#ffffff", light[name])
         if ratio < 4.5:
             fail(f"white on {name} contrast {ratio:.2f} < 4.5")
+    check_theme_variants(css)
+
+
+def check_theme_variants(css: str) -> None:
+    expected = {
+        "a": {"--bg": "#ffffff", "--section": "#f5f6f8", "--surface": "#ffffff"},
+        "b": {"--bg": "#0e1420", "--surface": "#161d2b"},
+        "c": {"--bg": "#fffbef", "--surface": "#ffffff"},
+    }
+    pairs = [
+        ("--ink", "--bg", 4.5),
+        ("--ink", "--section", 4.5),
+        ("--muted", "--bg", 4.5),
+        ("--muted", "--surface", 4.5),
+        ("--muted", "--section", 4.5),
+        ("--accent", "--bg", 4.5),
+        ("--accent", "--surface", 4.5),
+        ("--accent", "--section", 4.5),
+        ("--focus", "--bg", 3.0),
+    ]
+    for name, required in expected.items():
+        match = re.search(rf'html\[data-theme="{name}"\] \{{([^}}]+)\}}', css)
+        if not match:
+            fail(f"missing background theme {name}")
+            continue
+        tokens = {
+            key.lower(): value.lower()
+            for key, value in re.findall(r"(--[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", match.group(1))
+        }
+        for key, value in required.items():
+            if tokens.get(key) != value:
+                fail(f"theme {name} {key} is {tokens.get(key)}, expected {value}")
+        for fg, bg, minimum in pairs:
+            if fg not in tokens or bg not in tokens:
+                fail(f"theme {name} missing {fg} or {bg}")
+                continue
+            ratio = contrast(tokens[fg], tokens[bg])
+            if ratio < minimum:
+                fail(f"theme {name} {fg} on {bg} contrast {ratio:.2f} < {minimum}")
 
 
 def check_generated(module) -> None:
