@@ -209,7 +209,15 @@ def check_pages() -> list[Path]:
         ROOT / "support" / "index.html",
         ROOT / "CNAME",
         ROOT / "css" / "site.css",
-        ROOT / "favicon.svg",
+        ROOT / "favicon.ico",
+        ROOT / "favicon-16.png",
+        ROOT / "favicon-32.png",
+        ROOT / "favicon-48.png",
+        ROOT / "apple-touch-icon.png",
+        ROOT / "og-image.png",
+        ROOT / "svg" / "yuza-lockup-light.svg",
+        ROOT / "svg" / "yuza-lockup-dark.svg",
+        ROOT / "svg" / "yuza-favicon-tile.svg",
         ROOT / ".nojekyll",
         ROOT / "robots.txt",
         ROOT / "sitemap.xml",
@@ -279,10 +287,18 @@ def check_html(pages: list[Path]) -> None:
             target = resolve_href(page, src, ROOT)
             if target is not None and not target.exists():
                 fail(f"{rel} missing image {src}")
-            if "/icons/" not in src and "download-on-the-app-store" not in src and src:
+            if "/icons/" not in src and "download-on-the-app-store" not in src and "yuza-lockup" not in src and src:
                 alt = (img.get("alt") or "").strip()
                 if len(alt) < 12:
                     fail(f"{rel} screenshot alt is too short: {src}")
+        if "svg/yuza-lockup-light.svg" not in text or "svg/yuza-lockup-dark.svg" not in text:
+            fail(f"{rel} missing the YuZa lockup")
+        if 'property="og:image" content="https://yuzastudios.com/og-image.png"' not in text:
+            fail(f"{rel} missing og:image")
+        if 'name="twitter:card" content="summary_large_image"' not in text:
+            fail(f"{rel} missing twitter card")
+        if 'name="theme-color" content="#1B2440"' not in text:
+            fail(f"{rel} missing navy theme-color")
         if "support@yuzastudios.com" not in text and page.name != "404.html":
             # 404 may still include the footer email. Require it everywhere.
             pass

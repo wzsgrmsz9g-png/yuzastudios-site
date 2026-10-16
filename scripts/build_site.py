@@ -463,6 +463,15 @@ def crumbs(items: list[tuple[str, str | None]]) -> str:
     return "\n".join(parts)
 
 
+def lockup(prefix: str) -> str:
+    light = href(prefix, "svg/yuza-lockup-light.svg")
+    dark = href(prefix, "svg/yuza-lockup-dark.svg")
+    return (
+        f'<img class="lockup lockup-light" src="{esc(light)}" alt="YuZa" width="1260" height="512">'
+        f'<img class="lockup lockup-dark" src="{esc(dark)}" alt="YuZa" width="1260" height="512">'
+    )
+
+
 def chrome(
     *,
     title: str,
@@ -479,8 +488,14 @@ def chrome(
     privacy = href(prefix, "privacy/")
     support = href(prefix, "support/")
     css = href(prefix, "css/site.css")
-    icon = href(prefix, "favicon.svg")
     script = href(prefix, "js/site.js")
+    icon_ico = href(prefix, "favicon.ico")
+    icon_16 = href(prefix, "favicon-16.png")
+    icon_32 = href(prefix, "favicon-32.png")
+    icon_48 = href(prefix, "favicon-48.png")
+    icon_svg = href(prefix, "svg/yuza-favicon-tile.svg")
+    apple_icon = href(prefix, "apple-touch-icon.png")
+    brand = lockup(prefix)
 
     def nav_link(label: str, link: str, key: str) -> str:
         current_attr = ' aria-current="page"' if current == key else ""
@@ -503,11 +518,23 @@ def chrome(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="{esc(description)}">
-  <meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1B2440">
+  <meta property="og:title" content="{esc(title)}">
+  <meta property="og:description" content="{esc(description)}">
+  <meta property="og:url" content="{esc(canonical)}">
+  <meta property="og:image" content="https://yuzastudios.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yuzastudios.com/og-image.png">
   <title>{esc(title)}</title>
   <link rel="canonical" href="{esc(canonical)}">
-  <link rel="icon" href="{esc(icon)}" type="image/svg+xml">{robots}
+  <link rel="icon" href="{esc(icon_ico)}" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="{esc(icon_32)}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{esc(icon_16)}">
+  <link rel="icon" type="image/png" sizes="48x48" href="{esc(icon_48)}">
+  <link rel="icon" type="image/svg+xml" href="{esc(icon_svg)}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{esc(apple_icon)}">{robots}
   <link rel="stylesheet" href="{esc(css)}">
   <script src="{esc(script)}" defer></script>
 </head>
@@ -517,9 +544,7 @@ def chrome(
   <header class="site-header">
     <div class="wrap bar">
       <a class="wordmark" href="{esc(home)}">
-        <span class="seal" aria-hidden="true"></span>
-        YuZa
-        <span class="studio">Studio</span>
+        {brand}
       </a>
       <nav class="nav" aria-label="Primary">
         <ul>
@@ -538,7 +563,7 @@ def chrome(
   <footer class="site-footer">
     <div class="wrap footer-grid">
       <div class="footer-id">
-        <p class="footer-brand">YuZa Studio</p>
+        <a class="footer-brand" href="{esc(home)}">{brand}</a>
         <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
         <p>This website does not use cookies or trackers.</p>
         <p class="copyright">© YuZa Studio</p>
