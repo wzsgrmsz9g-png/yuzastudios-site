@@ -14,6 +14,7 @@ The committed HTML is the site. Run this script after editing copy, then scripts
 from __future__ import annotations
 
 import html
+import json
 from pathlib import Path
 
 HOST = "yuzastudios.com"
@@ -178,6 +179,202 @@ APPS = [
 ]
 
 
+def load_store() -> dict:
+    return json.loads((ROOT / "data" / "apps.json").read_text(encoding="utf-8"))
+
+
+STORE = load_store()
+STORE_BY_SLUG = {item["slug"]: item for item in STORE["apps"]}
+
+# Real captures only. Forge files are already marketing frames, so they stay on a
+# flat plate. The other shots are raw simulator screens and sit in a CSS phone.
+MEDIA = {
+    "forge": {
+        "icon": "assets/apps/icons/forge.webp",
+        "frame": "plate",
+        "card_shot": 0,
+        "features": [
+            "Log every set with plates, reps, and a rest timer",
+            "Train with the Apple Watch companion and share workouts with Apple Health",
+            "Review weekly volume, reps, and workouts",
+            "Follow strength trends for each lift, on your device",
+        ],
+        "shots": [
+            {
+                "src": "assets/apps/forge/01-log-every-set.webp",
+                "w": 640,
+                "h": 1387,
+                "alt": "Forge Strength poster, Log every set. The phone shows a Pull workout with Bench Press, Lat Pulldown, and Barbell Row, including plates, reps, and a rest timer.",
+            },
+            {
+                "src": "assets/apps/forge/02-watch-health.webp",
+                "w": 640,
+                "h": 1387,
+                "alt": "Forge Strength poster, Apple Watch and Health. The watch shows heart-rate zones during Bench Press, and the phone shows the workout shared with Apple Health.",
+            },
+            {
+                "src": "assets/apps/forge/03-weekly-progress.webp",
+                "w": 640,
+                "h": 1387,
+                "alt": "Forge Strength poster, Weekly progress. A chart summarizes volume, reps, and workouts for the week of 12 October.",
+            },
+            {
+                "src": "assets/apps/forge/04-strength-trend.webp",
+                "w": 640,
+                "h": 1387,
+                "alt": "Forge Strength poster, Strength trend. Bench press weight is plotted rising from 135 to 185 pounds over recent weeks.",
+            },
+        ],
+    },
+    "cantotalk": {
+        "icon": "assets/apps/icons/cantotalk.webp",
+        "frame": "device",
+        "card_shot": 0,
+        "features": [
+            "Practise everyday Hong Kong Cantonese with Jyutping and English",
+            "Take short courses such as Café, Dim Sum, and Market",
+            "Speak turns in a guided conversation",
+            "Listen and practise on device. Version 1.0 stays offline",
+        ],
+        "shots": [
+            {
+                "src": "assets/apps/cantotalk/01-home.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "CantoTalk home. Continue learning shows the Café lesson 你好, Jyutping nei5 hou2, meaning hello, and a path from Café to Dim Sum to Market.",
+            },
+            {
+                "src": "assets/apps/cantotalk/02-courses.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "CantoTalk courses for Café, Dim Sum, and Market, with the phrases 你好, 一位, and 幾多錢.",
+            },
+            {
+                "src": "assets/apps/cantotalk/03-conversation.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "CantoTalk conversation at a café register. The barista says 你好，想要啲咩？ and the line to practise is 一位，唔該.",
+            },
+            {
+                "src": "assets/apps/cantotalk/04-conversation-complete.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "CantoTalk marks the café conversation complete and offers another practice or the next scenario, after the line 一位，唔該.",
+            },
+            {
+                "src": "assets/apps/cantotalk/05-practice.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "CantoTalk practice card for 你好, Jyutping nei5 hou2, meaning hello, with a control to hear the phrase.",
+            },
+        ],
+    },
+    "littleatlas": {
+        "icon": "assets/apps/icons/little-atlas.webp",
+        "frame": "device",
+        "card_shot": 1,
+        "features": [
+            "Browse curated family places in Calgary, including ages, cost, and hours",
+            "Filter for indoor places, free places, and nursing rooms",
+            "View places on a map",
+            "Read nursing-room notes. The catalog ships inside the app",
+        ],
+        "shots": [
+            {
+                "src": "assets/apps/little-atlas/01-welcome.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "Little Atlas welcome for Calgary. The screen offers Explore places and Saved places.",
+            },
+            {
+                "src": "assets/apps/little-atlas/02-explore.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "Little Atlas explore list for Calgary, with filters for indoor, free, and nursing rooms, and cards for the Central Library, Prince's Island Park, and the Calgary Zoo.",
+            },
+            {
+                "src": "assets/apps/little-atlas/03-map.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "Little Atlas map of Calgary with pins for the Central Library, Prince's Island Park, and the Calgary Zoo.",
+            },
+            {
+                "src": "assets/apps/little-atlas/04-nursing-rooms.webp",
+                "w": 640,
+                "h": 1391,
+                "alt": "Little Atlas nursing rooms list. The Central Library card mentions level 1 near the children's area and Monday to Saturday hours.",
+            },
+        ],
+    },
+    "receiptly": {
+        "icon": "assets/apps/icons/receiptly.webp",
+        "frame": "device",
+        "card_shot": 0,
+        "features": [],
+        "shots": [],
+    },
+    "chromaclear": {
+        "icon": "assets/apps/icons/chroma-clear.webp",
+        "frame": "device",
+        "card_shot": 3,
+        "features": [
+            "Play short levels on a grid of red, blue, and yellow tiles",
+            "Finish a level within the moves you are given",
+            "Line up tiles of the same color to build a combo",
+        ],
+        "shots": [
+            {
+                "src": "assets/apps/chroma-clear/01-combo.webp",
+                "w": 552,
+                "h": 1200,
+                "alt": "Chroma Clear level 12 with 2 moves left and a 3-tile combo on a grid of red, blue, and yellow.",
+            },
+            {
+                "src": "assets/apps/chroma-clear/02-amazing.webp",
+                "w": 552,
+                "h": 1200,
+                "alt": "Chroma Clear level 12 result. The word Amazing appears over a finished grid of red, blue, and yellow tiles.",
+            },
+            {
+                "src": "assets/apps/chroma-clear/03-unstoppable.webp",
+                "w": 552,
+                "h": 1200,
+                "alt": "Chroma Clear level 12 result. The word Unstoppable appears over a finished grid of red, blue, and yellow tiles.",
+            },
+            {
+                "src": "assets/apps/chroma-clear/04-level-start.webp",
+                "w": 552,
+                "h": 1200,
+                "alt": "Chroma Clear level 12 start, with a goal of 20 tiles and a grid of red, blue, and yellow.",
+            },
+        ],
+    },
+}
+
+HERO_SHOTS = [
+    {
+        "src": "assets/apps/cantotalk/01-home.webp",
+        "w": 640,
+        "h": 1391,
+        "alt": "CantoTalk on iPhone. The home screen continues the Café lesson 你好, Jyutping nei5 hou2, meaning hello.",
+        "speed": "0.045",
+        "lazy": False,
+        "priority": True,
+        "extra": "",
+    },
+    {
+        "src": "assets/apps/little-atlas/02-explore.webp",
+        "w": 640,
+        "h": 1391,
+        "alt": "Little Atlas on iPhone. The Calgary explore list shows the Central Library, Prince's Island Park, and the Calgary Zoo.",
+        "speed": "0.08",
+        "lazy": True,
+        "priority": False,
+        "extra": "hero-phone-back",
+    },
+]
+
+
 def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
@@ -194,6 +391,64 @@ def href(prefix: str, path: str) -> str:
     if path == "":
         return prefix or "./"
     return prefix + path
+
+
+def store_is_live(live: bool, apple_id: str | None) -> bool:
+    return bool(live) and isinstance(apple_id, str) and apple_id.isdigit()
+
+
+def store_cta_from_status(
+    prefix: str,
+    *,
+    live: bool,
+    apple_id: str | None,
+    badge: dict,
+) -> str:
+    """Official badge only for a live app with an Apple ID. Otherwise a text label and no link."""
+    if store_is_live(live, apple_id):
+        url = f"https://apps.apple.com/app/id{apple_id}"
+        src = href(prefix, badge["src"])
+        return (
+            f'<a class="store-badge" href="{esc(url)}">'
+            f'<img src="{esc(src)}" alt="Download on the App Store" '
+            f'width="{int(badge["width"])}" height="{int(badge["height"])}" decoding="async">'
+            f"</a>"
+        )
+    return '<p class="store-soon">Coming soon to the App Store</p>'
+
+
+def store_cta(prefix: str, slug: str) -> str:
+    meta = STORE_BY_SLUG[slug]
+    apple_id = meta.get("appleId")
+    if apple_id is not None:
+        apple_id = str(apple_id)
+    return store_cta_from_status(
+        prefix,
+        live=bool(meta.get("live")),
+        apple_id=apple_id,
+        badge=STORE["badge"],
+    )
+
+
+def icon_tag(prefix: str, slug: str, lazy: bool) -> str:
+    loading = ' loading="lazy"' if lazy else ""
+    src = href(prefix, MEDIA[slug]["icon"])
+    return (
+        f'<img class="app-icon" src="{esc(src)}" alt="" width="512" height="512"'
+        f'{loading} decoding="async">'
+    )
+
+
+def shot_figure(prefix: str, shot: dict, frame: str, lazy: bool, priority: bool = False) -> str:
+    loading = ' loading="lazy"' if lazy else ""
+    fetch = ' fetchpriority="high"' if priority else ""
+    src = href(prefix, shot["src"])
+    return (
+        f'<figure class="frame-{frame}">'
+        f'<img src="{esc(src)}" alt="{esc(shot["alt"])}" width="{shot["w"]}" height="{shot["h"]}"'
+        f'{loading}{fetch} decoding="async">'
+        f"</figure>"
+    )
 
 
 def crumbs(items: list[tuple[str, str | None]]) -> str:
@@ -225,10 +480,20 @@ def chrome(
     support = href(prefix, "support/")
     css = href(prefix, "css/site.css")
     icon = href(prefix, "favicon.svg")
+    script = href(prefix, "js/site.js")
 
     def nav_link(label: str, link: str, key: str) -> str:
         current_attr = ' aria-current="page"' if current == key else ""
         return f'<li><a href="{esc(link)}"{current_attr}>{esc(label)}</a></li>'
+
+    footer_links = [
+        nav_link("Home", home, "home"),
+        nav_link("Privacy", privacy, "privacy"),
+        nav_link("Support", support, "support"),
+    ]
+    for app in APPS:
+        footer_links.append(nav_link(app["name"], href(prefix, f"{app['slug']}/"), app["slug"]))
+    footer_html = "\n          ".join(footer_links)
 
     robots = '\n  <meta name="robots" content="noindex">' if noindex else ""
     canonical = f"https://{HOST}/{canonical_path}"
@@ -244,6 +509,7 @@ def chrome(
   <link rel="canonical" href="{esc(canonical)}">
   <link rel="icon" href="{esc(icon)}" type="image/svg+xml">{robots}
   <link rel="stylesheet" href="{esc(css)}">
+  <script src="{esc(script)}" defer></script>
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>
@@ -271,14 +537,15 @@ def chrome(
   </main>
   <footer class="site-footer">
     <div class="wrap footer-grid">
-      <p class="footer-brand">YuZa Studio</p>
-      <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
-      <p>This website does not use cookies or trackers.</p>
+      <div class="footer-id">
+        <p class="footer-brand">YuZa Studio</p>
+        <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
+        <p>This website does not use cookies or trackers.</p>
+        <p class="copyright">© YuZa Studio</p>
+      </div>
       <nav class="footer-nav" aria-label="Footer">
         <ul>
-          {nav_link("Home", home, "home")}
-          {nav_link("Privacy", privacy, "privacy")}
-          {nav_link("Support", support, "support")}
+          {footer_html}
         </ul>
       </nav>
     </div>
@@ -318,51 +585,121 @@ def unpublished_privacy(name: str) -> str:
 """.strip()
 
 
-def app_article(app: dict) -> str:
+def app_article(app: dict, prefix: str) -> str:
+    media = MEDIA[app["slug"]]
     extra = ""
     if not app["published"]:
-        extra = "\n<p>A product description has not been published yet.</p>"
+        extra = "\n        <p>A product description has not been published yet.</p>"
+    hero_class = "app-hero reveal"
+    shot_html = ""
+    if media["shots"]:
+        hero_class += " has-shot"
+        shot = media["shots"][media["card_shot"]]
+        shot_html = (
+            '\n      <div class="parallax hero-shot" data-parallax="0.06">\n        '
+            + shot_figure(prefix, shot, media["frame"], lazy=False)
+            + "\n      </div>"
+        )
+    gallery = ""
+    if media["shots"]:
+        frames = "\n        ".join(
+            shot_figure(prefix, shot, media["frame"], lazy=True) for shot in media["shots"]
+        )
+        gallery = f"""
+    <section class="shot-section reveal" aria-labelledby="{esc(app["slug"])}-screens">
+      <h2 id="{esc(app["slug"])}-screens">Screens</h2>
+      <div class="gallery" tabindex="0" role="region" aria-label="{esc(app["name"])} screenshots">
+        {frames}
+      </div>
+    </section>"""
+    features = ""
+    if media["features"]:
+        items = "\n".join(f"        <li>{esc(item)}</li>" for item in media["features"])
+        features = f"""
+    <section class="feature-block reveal" aria-labelledby="{esc(app["slug"])}-features">
+      <h2 id="{esc(app["slug"])}-features">Features</h2>
+      <ul>
+{items}
+      </ul>
+    </section>"""
     return f"""
-<p class="kicker">iOS app</p>
-<h1>{esc(app["name"])}</h1>
-<p class="lede">{esc(app["summary"])}</p>{extra}
-<ul class="page-links">
-<li><a href="privacy/">Privacy policy</a></li>
-<li><a href="support/">Support</a></li>
-</ul>
+<article class="app-page">
+  <header class="{hero_class}">
+    <div class="app-copy-block">
+      <div class="app-intro">
+        {icon_tag(prefix, app["slug"], lazy=False)}
+        <div>
+          <p class="kicker">iOS app</p>
+          <h1>{esc(app["name"])}</h1>
+        </div>
+      </div>
+      <p class="lede">{esc(app["summary"])}</p>{extra}
+      {store_cta(prefix, app["slug"])}
+    </div>{shot_html}
+  </header>{gallery}{features}
+  <ul class="page-links">
+    <li><a href="privacy/">Privacy policy</a></li>
+    <li><a href="support/">Support</a></li>
+  </ul>
+</article>
 """.strip()
 
 
-def home_body(prefix: str) -> str:
-    cards = []
-    for app in APPS:
-        cards.append(
-            f"""<li>
-            <a class="app-card app-{esc(app["slug"])}" href="{esc(href(prefix, app["slug"] + "/"))}">
-              <span class="mark" aria-hidden="true">{esc(app["mark"])}</span>
-              <span class="app-copy">
-                <span class="app-name">{esc(app["name"])}</span>
-                <span class="app-blurb">{esc(app["blurb"])}</span>
-              </span>
-              <span class="go" aria-hidden="true">→</span>
-            </a>
-          </li>"""
+def home_card(prefix: str, app: dict, index: int) -> str:
+    media = MEDIA[app["slug"]]
+    shot = ""
+    if media["shots"]:
+        chosen = media["shots"][media["card_shot"]]
+        plate = " is-plate" if media["frame"] == "plate" else ""
+        shot = (
+            f'\n        <div class="card-shot{plate}">'
+            f'{shot_figure(prefix, chosen, media["frame"], lazy=True)}'
+            f"</div>"
         )
-    catalog = "\n          ".join(cards)
+    return f"""<li class="app-card app-{esc(app["slug"])} reveal delay-{index}">
+        {icon_tag(prefix, app["slug"], lazy=True)}
+        <div class="card-copy">
+          <h3 class="app-name"><a class="card-link" href="{esc(href(prefix, app["slug"] + "/"))}">{esc(app["name"])}</a></h3>
+          <p class="app-blurb">{esc(app["blurb"])}</p>
+        </div>{shot}
+        {store_cta(prefix, app["slug"])}
+      </li>"""
+
+
+def home_hero_stage(prefix: str) -> str:
+    phones = []
+    for shot in HERO_SHOTS:
+        extra = f' {shot["extra"]}' if shot["extra"] else ""
+        phones.append(
+            f'<div class="parallax{extra}" data-parallax="{shot["speed"]}">'
+            f'{shot_figure(prefix, shot, "device", lazy=shot["lazy"], priority=shot["priority"])}'
+            f"</div>"
+        )
+    inner = "\n          ".join(phones)
+    return f"""<div class="hero-stage reveal delay-1">
+          {inner}
+        </div>"""
+
+
+def home_body(prefix: str) -> str:
+    cards = "\n        ".join(home_card(prefix, app, index) for index, app in enumerate(APPS))
     return f"""
       <div class="home">
         <section class="hero">
-          <p class="kicker">Tiny indie studio</p>
-          <h1>Small iOS apps and digital products.</h1>
-          <p class="lede">YuZa Studio is a tiny indie studio. Open an app for a short introduction, its privacy page, and its support page.</p>
+          <div class="hero-copy reveal">
+            <p class="kicker">Tiny indie studio</p>
+            <h1>Small iOS apps and digital products.</h1>
+            <p class="lede">YuZa Studio is a tiny indie studio. Open an app for a short introduction, its privacy page, and its support page.</p>
+          </div>
+          {home_hero_stage(prefix)}
         </section>
         <section class="catalog" aria-labelledby="catalog-heading">
           <h2 id="catalog-heading">Apps</h2>
           <ul class="app-list">
-          {catalog}
+        {cards}
           </ul>
         </section>
-        <section class="band" aria-labelledby="help-heading">
+        <section class="band reveal" aria-labelledby="help-heading">
           <h2 id="help-heading">Privacy and support</h2>
           <p>Email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a> and name the app in the subject line.</p>
           <p><a href="{esc(href(prefix, "privacy/"))}">Privacy</a> · <a href="{esc(href(prefix, "support/"))}">Support page</a></p>
@@ -497,7 +834,7 @@ def build(dest: Path) -> None:
                         (app["name"], None),
                     ]
                 ),
-                f'<article class="prose">\n{indent(app_article(app), 2)}\n      </article>',
+                app_article(app, app_prefix),
             ]
         )
         write(
@@ -507,7 +844,7 @@ def build(dest: Path) -> None:
                 description=app["summary"],
                 canonical_path=f"{app['slug']}/",
                 depth=1,
-                current=None,
+                current=app["slug"],
                 body=indent(app_body, 6),
             ),
         )

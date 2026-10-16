@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import sys
 import tempfile
@@ -53,9 +54,10 @@ class PageParser(HTMLParser):
         self.main = False
         self.skip = False
         self.lang = False
-        self.scripts = 0
+        self.script_srcs: list[str | None] = []
         self.iframes = 0
         self.imgs_missing_alt: list[str] = []
+        self.imgs: list[dict[str, str | None]] = []
         self.hrefs: list[str] = []
         self.css: list[str] = []
 
@@ -68,11 +70,13 @@ class PageParser(HTMLParser):
         if tag == "main":
             self.main = True
         if tag == "script":
-            self.scripts += 1
+            self.script_srcs.append(data.get("src"))
         if tag == "iframe":
             self.iframes += 1
-        if tag == "img" and "alt" not in data:
-            self.imgs_missing_alt.append(str(data.get("src")))
+        if tag == "img":
+            self.imgs.append(data)
+            if "alt" not in data:
+                self.imgs_missing_alt.append(str(data.get("src")))
         if tag == "a" and data.get("href"):
             self.hrefs.append(data["href"])
             classes = data.get("class") or ""
@@ -200,8 +204,11 @@ def check_html(pages: list[Path]) -> None:
             fail(f"{rel} still mentions Clam")
         if "clam.app" in lowered or "clamstudio" in lowered:
             fail(f"{rel} still uses the old brand contact")
-        if re.search(r"<script|gtag|google-analytics|googletagmanager|facebook\.net|cookieconsent", lowered):
-            fail(f"{rel} includes a tracker or script")
+        if re.search(
+            r"gtag|google-analytics|googletagmanager|facebook\.net|cookieconsent|document\.cookie",
+            lowered,
+        ):
+            fail(f"{rel} includes a tracker")
         parser = PageParser()
         parser.feed(text)
         if not parser.lang:
@@ -212,16 +219,39 @@ def check_html(pages: list[Path]) -> None:
             fail(f"{rel} missing main")
         if not parser.skip:
             fail(f"{rel} missing skip link")
-        if parser.scripts or parser.iframes:
-            fail(f"{rel} has script or iframe tags")
+        if parser.iframes:
+            fail(f"{rel} has an iframe")
+        if len(parser.script_srcs) != 1 or not (parser.script_srcs[0] or "").endswith("js/site.js"):
+            fail(f"{rel} must load only js/site.js, found {parser.script_srcs}")
+        elif (parser.script_srcs[0] or "").startswith(("http://", "https://", "//")):
+            fail(f"{rel} loads a remote script")
+        else:
+            script_target = resolve_href(page, parser.script_srcs[0] or "", ROOT)
+            if script_target is None or not script_target.exists():
+                fail(f"{rel} missing local script {parser.script_srcs[0]}")
         if parser.imgs_missing_alt:
             fail(f"{rel} images missing alt")
+        for img in parser.imgs:
+            src = img.get("src") or ""
+            if src.startswith(("http://", "https://", "//")):
+                fail(f"{rel} remote image {src}")
+            if not img.get("width") or not img.get("height"):
+                fail(f"{rel} image missing width or height: {src}")
+            target = resolve_href(page, src, ROOT)
+            if target is not None and not target.exists():
+                fail(f"{rel} missing image {src}")
+            if "/icons/" not in src and "download-on-the-app-store" not in src and src:
+                alt = (img.get("alt") or "").strip()
+                if len(alt) < 12:
+                    fail(f"{rel} screenshot alt is too short: {src}")
         if "support@yuzastudios.com" not in text and page.name != "404.html":
             # 404 may still include the footer email. Require it everywhere.
             pass
         if "support@yuzastudios.com" not in text:
             fail(f"{rel} missing support email")
         for link in parser.hrefs:
+            if link.lower().startswith("javascript:"):
+                fail(f"{rel} has a javascript link")
             target = resolve_href(page, link, ROOT)
             if target is not None and not target.exists():
                 fail(f"{rel} broken link {link} -> {target}")
@@ -360,6 +390,107 @@ def check_deploy_files() -> None:
             fail(f"sitemap missing {path}")
 
 
+def is_live(item: dict) -> bool:
+    apple_id = item.get("appleId")
+    return bool(item.get("live")) and isinstance(apple_id, str) and str(apple_id).isdigit()
+
+
+def check_store(module) -> None:
+    store = json.loads((ROOT / "data" / "apps.json").read_text(encoding="utf-8"))
+    slugs = [item["slug"] for item in store["apps"]]
+    if slugs != ["forge", "cantotalk", "littleatlas", "receiptly", "chromaclear"]:
+        fail(f"apps.json slugs changed: {slugs}")
+    badge_path = ROOT / store["badge"]["src"]
+    if not badge_path.exists():
+        fail("missing official App Store badge")
+    else:
+        badge = badge_path.read_text(encoding="utf-8")
+        if "Download_on_the_App_Store_Badge" not in badge or "<script" in badge.lower():
+            fail("App Store badge is missing its official title or contains a script")
+    home = (ROOT / "index.html").read_text(encoding="utf-8")
+    coming = 0
+    for item in store["apps"]:
+        page = (ROOT / item["slug"] / "index.html").read_text(encoding="utf-8")
+        icon = {
+            "forge": "icons/forge.webp",
+            "cantotalk": "icons/cantotalk.webp",
+            "littleatlas": "icons/little-atlas.webp",
+            "receiptly": "icons/receiptly.webp",
+            "chromaclear": "icons/chroma-clear.webp",
+        }[item["slug"]]
+        if icon not in page or icon not in home:
+            fail(f"{item['slug']} icon missing from the app page or home")
+        if is_live(item):
+            url = f"https://apps.apple.com/app/id{item['appleId']}"
+            if url not in page or "Download on the App Store" not in page:
+                fail(f"{item['slug']} live badge missing")
+            if "Coming soon to the App Store" in page:
+                fail(f"{item['slug']} is live and still says coming soon")
+        else:
+            coming += 1
+            if page.count("Coming soon to the App Store") < 1:
+                fail(f"{item['slug']} missing coming soon label")
+            if "apps.apple.com" in page:
+                fail(f"{item['slug']} has a store link while it is not live")
+    if home.count("Coming soon to the App Store") < coming:
+        fail("home is missing a coming soon label")
+    if coming == len(store["apps"]) and "apps.apple.com" in home:
+        fail("home links to the App Store while no app is live")
+    live_html = module.store_cta_from_status(
+        "",
+        live=True,
+        apple_id="6816285160",
+        badge=store["badge"],
+    )
+    if "https://apps.apple.com/app/id6816285160" not in live_html or "Download on the App Store" not in live_html:
+        fail("live store helper did not emit the official badge link")
+    if "Coming soon" in live_html:
+        fail("live store helper still says coming soon")
+    for live, apple_id in ((False, "6816285160"), (True, None)):
+        quiet = module.store_cta_from_status("", live=live, apple_id=apple_id, badge=store["badge"])
+        if "apps.apple.com" in quiet or "<a " in quiet or "Coming soon to the App Store" not in quiet:
+            fail("unpublished store state emitted a link")
+
+
+def check_motion() -> None:
+    js = (ROOT / "js" / "site.js").read_text(encoding="utf-8")
+    for bit in ("IntersectionObserver", "prefers-reduced-motion", "data-parallax", "requestAnimationFrame"):
+        if bit not in js:
+            fail(f"site.js missing {bit}")
+    for banned in (
+        "document.cookie",
+        "localStorage",
+        "sessionStorage",
+        "indexedDB",
+        "sendBeacon",
+        "fetch(",
+        "XMLHttpRequest",
+        "gtag",
+        "https://",
+        "http://",
+    ):
+        if banned in js:
+            fail(f"site.js contains {banned}")
+    css = (ROOT / "css" / "site.css").read_text(encoding="utf-8")
+    for bit in (
+        "prefers-reduced-motion",
+        "scroll-behavior: auto",
+        "html.js .reveal:not(.is-in)",
+        "scroll-snap-type: x mandatory",
+    ):
+        if bit not in css:
+            fail(f"CSS missing {bit}")
+    forge = (ROOT / "forge" / "index.html").read_text(encoding="utf-8")
+    if "frame-device" in forge or "frame-plate" not in forge:
+        fail("Forge screenshots must sit on a plate, not inside a phone frame")
+    receipt = (ROOT / "receiptly" / "index.html").read_text(encoding="utf-8")
+    if "frame-device" in receipt or "frame-plate" in receipt:
+        fail("Receiptly should show the icon and coming soon label only")
+    canto = (ROOT / "cantotalk" / "index.html").read_text(encoding="utf-8")
+    if canto.count("frame-device") < 5:
+        fail("CantoTalk gallery is missing phone frames")
+
+
 def main() -> int:
     module = load_builder()
     check_generated(module)
@@ -367,6 +498,8 @@ def main() -> int:
     check_html(pages)
     check_legal()
     check_deploy_files()
+    check_store(module)
+    check_motion()
     if ERRORS:
         print(f"{len(ERRORS)} check(s) failed:")
         for message in ERRORS:
