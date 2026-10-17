@@ -4,7 +4,7 @@
 Legal copy for Forge Strength, CantoTalk, and Little Atlas is ported from
 https://github.com/wzsgrmsz9g-png/clam-legal at 11022ca696cadcdf383b490ab1ca47581511e4f6.
 Substitutions: Clam / ClamStudio → YuZa Studio, support@clam.app → support@yuzastudios.com.
-CantoTalk gains one line because that app has in-app purchases: "Purchases are processed by Apple."
+CantoTalk 1.1 adds an In-app purchase (StoreKit) section; see the 2026-10-17 Legal review.
 Forge already says purchases are processed by Apple. Receiptly and ChromaClear have no source
 policy; their privacy pages do not describe data practices.
 
@@ -28,8 +28,8 @@ FORGE_WHAT = (
 )
 CANTO_WHAT = (
     "CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. "
-    "Version 1.0 is offline: lessons, listening drills and self-recording work without "
-    "an account and without contacting the network."
+    "Lessons, listening drills and self-recording work offline, without an account. "
+    "The full course is a one-time in-app purchase."
 )
 ATLAS_WHAT = (
     "Discover family-friendly places, playgrounds and nursing rooms wherever you are."
@@ -73,23 +73,25 @@ FORGE_PRIVACY = """
 <p>See <a href="../support/">Support</a> for contact details.</p>
 """.strip()
 
-# The in-app purchases section is the only addition to the clam-legal CantoTalk policy.
+# CantoTalk 1.1 policy: In-app purchase (StoreKit 2) section, network wording, Changes and operator line (Legal review 2026-10-17).
 CANTO_PRIVACY = """
 <h1>CantoTalk — Privacy Policy</h1>
-<p class="meta"><strong>Effective date:</strong> 8 October 2026<br>
+<p>CantoTalk is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
+<p class="meta"><strong>Effective date:</strong> 17 October 2026 (adds In-app purchase)<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>What CantoTalk is</h2>
-<p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Version 1.0 is offline: lessons, listening drills and self-recording work without an account and without contacting the network.</p>
+<p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Lessons, listening drills and self-recording work offline, without an account. The only network activity is Apple’s App Store system, which handles the optional in-app purchase (see In-app purchase below).</p>
 <h2>Data on your device</h2>
 <ul>
 <li>Lesson completion, review progress and practice self-checks (UserDefaults)</li>
 <li>Short-lived microphone recordings while you practise — stored only on this device and removed when you leave the practice screen or background the app (iOS may clean leftover temp files after an abrupt termination)</li>
+<li>Whether the course unlock is active (a cached flag; Apple’s StoreKit remains the source of truth)</li>
 </ul>
-<p>CantoTalk does not collect personal data, does not create accounts, and does not upload progress or recordings.</p>
+<p>We do not collect personal data, create accounts, or upload progress or recordings. Purchases are handled by Apple (see In-app purchase).</p>
 <h2>Audio and microphone</h2>
 <p>Text-to-speech uses Apple’s on-device <strong>AVSpeechSynthesizer</strong>. When you tap Record, the app uses <strong>AVAudioRecorder</strong> to capture audio locally so you can listen back. Recordings stay on the device and are not uploaded. Microphone permission is requested only when you record.</p>
 <h2>Network, SDKs and tracking</h2>
-<p>The shipping 1.0 build does not make network calls for lessons, practice or progress. It does not include analytics, advertising or other third-party SDKs. CantoTalk does not track you across apps or websites and does not use advertising identifiers.</p>
+<p>CantoTalk does not send your lessons, practice, progress, recordings or any other data to us or to any server we operate. To show prices and to process, restore and verify the optional in-app purchase, Apple’s App Store / StoreKit system on your device communicates with Apple’s servers. CantoTalk does not include analytics, advertising or other third-party SDKs. CantoTalk does not track you across apps or websites and does not use advertising identifiers.</p>
 <h2>Children</h2>
 <p>Not directed at children under 13.</p>
 <h2>Your choices</h2>
@@ -97,8 +99,15 @@ CANTO_PRIVACY = """
 <li>Deny microphone access in iOS Settings</li>
 <li>Delete the app to remove on-device progress and any leftover local recordings</li>
 </ul>
-<h2>In-app purchases</h2>
-<p>Purchases are processed by Apple.</p>
+<h2>In-app purchase</h2>
+<p>CantoTalk 1.1 offers an optional one-time purchase, the CantoTalk course unlock (US$14.99 or the local equivalent shown in the App Store). It is a non-consumable purchase: you buy it once and it stays unlocked for your Apple Account.</p>
+<p><strong>Apple processes the payment.</strong> Purchases are made through the App Store using Apple’s in-app purchase system (StoreKit). Apple handles your payment method, billing details, receipts and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</p>
+<p><strong>How your purchase is checked.</strong> CantoTalk uses Apple’s StoreKit to ask whether your Apple Account owns the unlock. Apple digitally signs this information, and the app checks it on your device. It also checks Apple’s signed record of when you first installed the app, so people who installed before version 1.1 keep full access. The app saves a small “unlocked” flag on your device so it opens quickly; this flag is not sent anywhere. “Restore Purchases” asks Apple to re-sync your purchases.</p>
+<p><strong>What goes over the network.</strong> To show the price, complete a purchase, restore it or confirm it, iOS’s App Store / StoreKit system communicates with Apple’s servers. That communication is between your device and Apple. CantoTalk does not send purchase, payment or any other data to us or to any server we operate, and it contains no third-party purchase, analytics or advertising SDKs. We do not receive a list of who has bought the unlock, apart from the aggregated sales reports Apple gives all developers. Those reports don’t identify you.</p>
+<p><strong>Family Sharing.</strong> The course unlock is not shared through Family Sharing.</p>
+<p><strong>Refunds.</strong> Refund requests are handled by Apple at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>. If Apple refunds the purchase, the unlock is removed the next time the app checks with StoreKit.</p>
+<h2>Changes</h2>
+<p>Material changes will be reflected in this document and in the App Store privacy labels.</p>
 <h2>Contact</h2>
 <p>Questions: use the in-app Support link or email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
 <h2>Support</h2>
@@ -551,7 +560,7 @@ def chrome(
         <a class="footer-brand" href="{esc(home)}">{brand}</a>
         <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
         <p>This website does not use cookies or trackers.</p>
-        <p class="copyright">© YuZa Studio</p>
+        <p class="copyright">© 2026 YuZa Studio. YuZa Studio is the studio name of Clay Cavanagh, the developer listed on the App Store.</p>
       </div>
       <nav class="footer-nav" aria-label="Footer">
         <ul>
@@ -574,6 +583,8 @@ def support_article(name: str) -> str:
     return f"""
 <h1>{esc(name)} — Support</h1>
 <p><strong>Email:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
+<p><strong>Phone:</strong> +1 587-858-4643 (business line)</p>
+<p>YuZa Studio is the studio name of Clay Cavanagh. On the App Store, our apps are listed under the seller name “Clay Cavanagh”.</p>
 <p>This is the public support address for all YuZa Studio apps. Please name the app in the subject line so we can help faster.</p>
 <h2>Privacy</h2>
 <ul>
@@ -742,6 +753,7 @@ def studio_privacy(prefix: str) -> str:
 <h2>This website</h2>
 <p>The pages on {HOST} are static files. They do not set cookies and do not load analytics, advertising, or other third-party scripts.</p>
 <h2>Contact</h2>
+<p>These policies are provided by Clay Cavanagh, operating as YuZa Studio (Alberta, Canada).</p>
 <p>Email: <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <p>For privacy questions, name the app in the subject line. The <a href="{esc(href(prefix, "support/"))}">support page</a> lists the same address.</p>
 """.strip()
@@ -761,6 +773,8 @@ def studio_support(prefix: str) -> str:
     return f"""
 <h1>Support</h1>
 <p><strong>Email:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
+<p><strong>Phone:</strong> +1 587-858-4643 (business line)</p>
+<p>YuZa Studio is the studio name of Clay Cavanagh. On the App Store, our apps are listed under the seller name “Clay Cavanagh”.</p>
 <p>This is the public support address for all YuZa Studio apps. Please name the app in the subject line so we can help faster.</p>
 <h2>Apps</h2>
 <ul>

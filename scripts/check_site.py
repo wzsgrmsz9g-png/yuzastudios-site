@@ -325,13 +325,15 @@ def check_legal() -> None:
         "Apple Health records remain under your control",
     ]
     canto_bits = [
-        "Effective date:</strong> 8 October 2026",
+        "Effective date:</strong> 17 October 2026",
         "practise everyday Hong Kong Cantonese",
         "AVSpeechSynthesizer",
         "AVAudioRecorder",
         "Not directed at children under 13.",
-        "Purchases are processed by Apple.",
-        "does not upload progress or recordings",
+        "Apple processes the payment.",
+        "Apple’s App Store / StoreKit system on your device communicates with Apple’s servers.",
+        "The course unlock is not shared through Family Sharing.",
+        "upload progress or recordings",
     ]
     atlas_bits = [
         "Effective date:</strong> 7 October 2026",
