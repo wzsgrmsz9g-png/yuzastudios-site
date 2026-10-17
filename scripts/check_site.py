@@ -335,7 +335,7 @@ def check_legal() -> None:
     ]
     atlas_bits = [
         "Effective date:</strong> 7 October 2026",
-        "nursing-room listings in Calgary",
+        "nursing-room listings. Catalog data and photos ship inside the app.",
         "Core Location (while in use)",
         "Apple Maps or Google Maps",
         "The app is not designed to collect data from children.",
@@ -497,7 +497,16 @@ def check_store(module) -> None:
 
 def check_motion() -> None:
     js = (ROOT / "js" / "site.js").read_text(encoding="utf-8")
-    for bit in ("IntersectionObserver", "prefers-reduced-motion", "data-parallax", "requestAnimationFrame"):
+    for bit in (
+        "IntersectionObserver",
+        "prefers-reduced-motion",
+        "data-parallax",
+        "requestAnimationFrame",
+        "scale(0.94)",
+        "rotate(",
+        "word-reveal",
+        "translate3d",
+    ):
         if bit not in js:
             fail(f"site.js missing {bit}")
     for banned in (
@@ -519,6 +528,8 @@ def check_motion() -> None:
         "prefers-reduced-motion",
         "scroll-behavior: auto",
         "html.js .reveal:not(.is-in)",
+        "scale(0.94)",
+        "rotate(-8deg)",
         "scroll-snap-type: x mandatory",
     ):
         if bit not in css:
@@ -532,6 +543,43 @@ def check_motion() -> None:
     canto = (ROOT / "cantotalk" / "index.html").read_text(encoding="utf-8")
     if canto.count("frame-device") < 5:
         fail("CantoTalk gallery is missing phone frames")
+    check_positioning()
+
+
+def check_positioning() -> None:
+    calgary = []
+    for page in ROOT.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        if "Calgary" in text or "calgary" in text:
+            calgary.append(str(page.relative_to(ROOT)))
+    if calgary:
+        fail("Calgary still appears in " + ", ".join(calgary))
+    home = (ROOT / "index.html").read_text(encoding="utf-8")
+    hero = home.split('<section class="catalog"', 1)[0]
+    if "little-atlas/" in hero:
+        fail("home hero still shows a Little Atlas screenshot")
+    if "assets/apps/chroma-clear/04-level-start.webp" not in home:
+        fail("home hero is missing the Chroma Clear phone")
+    if "assets/apps/cantotalk/01-home.webp" not in home:
+        fail("home hero is missing the CantoTalk phone")
+    atlas = (ROOT / "littleatlas" / "index.html").read_text(encoding="utf-8")
+    for banned in ("01-welcome.webp", "02-explore.webp", "03-map.webp"):
+        if banned in atlas:
+            fail(f"Little Atlas page still features {banned}")
+    if "04-nursing-rooms.webp" not in atlas:
+        fail("Little Atlas page is missing the nursing-rooms screenshot")
+    if "Discover family-friendly places, playgrounds and nursing rooms wherever you are." not in atlas:
+        fail("Little Atlas is missing the new tagline")
+    if "Discover family-friendly places, playgrounds and nursing rooms wherever you are." not in home:
+        fail("home card is missing the Little Atlas tagline")
+    receipt = (ROOT / "receiptly" / "index.html").read_text(encoding="utf-8")
+    chroma = (ROOT / "chromaclear" / "index.html").read_text(encoding="utf-8")
+    if "Snap receipts and keep your spending organised." not in receipt:
+        fail("Receiptly description was not updated")
+    if "A bright, satisfying colour-matching puzzle game." not in chroma:
+        fail("ChromaClear description was not updated")
+    if "has not been published yet" in receipt or "has not been published yet" in chroma:
+        fail("placeholder product description is still on an app page")
 
 
 def main() -> int:
