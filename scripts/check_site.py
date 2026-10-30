@@ -325,15 +325,22 @@ def check_legal() -> None:
         "Apple Health records remain under your control",
     ]
     canto_bits = [
-        "Effective date:</strong> 17 October 2026",
+        "Effective date:</strong> 30 October 2026",
         "practise everyday Hong Kong Cantonese",
         "AVSpeechSynthesizer",
         "AVAudioRecorder",
-        "Not directed at children under 13.",
+        "CantoTalk is not directed at children.",
         "Apple processes the payment.",
-        "Apple’s App Store / StoreKit system on your device communicates with Apple’s servers.",
-        "The course unlock is not shared through Family Sharing.",
+        "auto-renewing subscriptions",
+        "CantoTalk subscriptions are not shared through Family Sharing.",
         "upload progress or recordings",
+    ]
+    receipt_bits = [
+        "Effective date:</strong> 30 October 2026",
+        "Receiptly is published by YuZa Studio.",
+        "Receiptly reads your receipts <strong>on your iPhone</strong>.",
+        "Receiptly Pro subscriptions are not shared through Family Sharing.",
+        "Receiptly makes no network requests of its own.",
     ]
     atlas_bits = [
         "Effective date:</strong> 7 October 2026",
@@ -347,6 +354,7 @@ def check_legal() -> None:
         ("forge", forge, forge_bits),
         ("cantotalk", canto, canto_bits),
         ("littleatlas", atlas, atlas_bits),
+        ("receiptly", receipt, receipt_bits),
     ):
         for bit in bits:
             if bit not in text:
@@ -354,7 +362,11 @@ def check_legal() -> None:
 
     if "processed by Apple" in atlas or "in-app purchase" in atlas.lower():
         fail("Little Atlas privacy gained purchase language")
-    for label, text in (("receiptly", receipt), ("chromaclear", chroma)):
+    for label, text in (("receiptly", receipt), ("cantotalk", canto)):
+        for bad in ("has not been published", "14.99", "Clay Cavanagh", "clam.app", "[CONFIRM", "governing law", "+1 587"):
+            if bad in text:
+                fail(f"{label} privacy must not contain: {bad}")
+    for label, text in (("chromaclear", chroma),):
         if "has not been published" not in text or "does not describe" not in text:
             fail(f"{label} privacy should say a policy has not been published")
         if "processed by Apple" in text or "we do not collect" in text.lower():

@@ -5,8 +5,8 @@ Legal copy for Forge Strength, CantoTalk, and Little Atlas is ported from
 https://github.com/wzsgrmsz9g-png/clam-legal at 11022ca696cadcdf383b490ab1ca47581511e4f6.
 Substitutions: Clam / ClamStudio → YuZa Studio, support@clam.app → support@yuzastudios.com.
 CantoTalk 1.1 adds an In-app purchase (StoreKit) section; see the 2026-10-17 Legal review.
-Forge already says purchases are processed by Apple. Receiptly and ChromaClear have no source
-policy; their privacy pages do not describe data practices.
+Forge already says purchases are processed by Apple. Receiptly's policy is the 2026-10-30 Legal
+review. ChromaClear has no source policy; its privacy page does not describe data practices.
 
 The committed HTML is the site. Run this script after editing copy, then scripts/check_site.py.
 """
@@ -73,45 +73,173 @@ FORGE_PRIVACY = """
 <p>See <a href="../support/">Support</a> for contact details.</p>
 """.strip()
 
-# CantoTalk 1.1 policy: In-app purchase (StoreKit 2) section, network wording, Changes and operator line (Legal review 2026-10-17).
+# CantoTalk 1.1 policy: subscriptions (Legal review 2026-10-30).
 CANTO_PRIVACY = """
 <h1>CantoTalk — Privacy Policy</h1>
-<p>CantoTalk is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
-<p class="meta"><strong>Effective date:</strong> 17 October 2026 (adds In-app purchase)<br>
+<p>CantoTalk is published by YuZa Studio.</p>
+<p class="meta"><strong>Effective date:</strong> 30 October 2026<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>What CantoTalk is</h2>
-<p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Lessons, listening drills and self-recording work offline, without an account. The only network activity is Apple’s App Store system, which handles the optional in-app purchase (see In-app purchase below).</p>
+<p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Lessons, listening drills and self-recording work offline, and you don’t need an account.</p>
+<p>The first lesson is free. The full course is available through optional auto-renewing subscriptions sold through Apple.</p>
+<p>The only network activity is Apple’s App Store system, which handles those subscriptions (see Subscriptions below).</p>
 <h2>Data on your device</h2>
 <ul>
-<li>Lesson completion, review progress and practice self-checks (UserDefaults)</li>
-<li>Short-lived microphone recordings while you practise — stored only on this device and removed when you leave the practice screen or background the app (iOS may clean leftover temp files after an abrupt termination)</li>
-<li>Whether the course unlock is active (a cached flag; Apple’s StoreKit remains the source of truth)</li>
+<li>Lesson completion, review progress, practice self-checks and game scores.</li>
+<li>Short-lived microphone recordings while you practise. These stay on this device and are removed when you leave the practice screen or send the app to the background. iOS may clean up leftover temporary files if the app closes unexpectedly.</li>
+<li>Simple counters about the subscription offer screen, such as whether you’ve already seen or dismissed it, so the app doesn’t keep showing it.</li>
+<li>Whether you have an active subscription. This is a cached flag; Apple’s StoreKit remains the source of truth.</li>
 </ul>
-<p>We do not collect personal data, create accounts, or upload progress or recordings. Purchases are handled by Apple (see In-app purchase).</p>
+<p>We do not collect personal data, create accounts, or upload progress or recordings.</p>
 <h2>Audio and microphone</h2>
-<p>Text-to-speech uses Apple’s on-device <strong>AVSpeechSynthesizer</strong>. When you tap Record, the app uses <strong>AVAudioRecorder</strong> to capture audio locally so you can listen back. Recordings stay on the device and are not uploaded. Microphone permission is requested only when you record.</p>
+<p>CantoTalk speaks phrases using Apple’s on-device text-to-speech (<strong>AVSpeechSynthesizer</strong>).</p>
+<p>When you tap Record, CantoTalk uses <strong>AVAudioRecorder</strong> to record audio on your device so you can listen back. It does not use speech recognition. Recordings stay on the device and are not uploaded.</p>
+<p>Microphone permission is requested only when you record.</p>
 <h2>Network, SDKs and tracking</h2>
-<p>CantoTalk does not send your lessons, practice, progress, recordings or any other data to us or to any server we operate. To show prices and to process, restore and verify the optional in-app purchase, Apple’s App Store / StoreKit system on your device communicates with Apple’s servers. CantoTalk does not include analytics, advertising or other third-party SDKs. CantoTalk does not track you across apps or websites and does not use advertising identifiers.</p>
-<h2>Children</h2>
-<p>Not directed at children under 13.</p>
+<p>CantoTalk does not send your lessons, practice, progress, recordings or any other data to us or to any server we operate. Apple’s App Store system on your device communicates with Apple’s servers to show prices and to process, restore and check subscriptions.</p>
+<p>CantoTalk includes no analytics, advertising or other third-party SDKs. It does not track you across apps or websites and does not use advertising identifiers.</p>
+<h2>Subscriptions</h2>
+<p>CantoTalk offers optional <strong>auto-renewing subscriptions</strong> that unlock the full course:</p>
+<ul>
+<li><strong>Monthly</strong>, renewing every month. Apple may offer a reduced price for the first month, or a one-week free trial on some offers.</li>
+<li><strong>Annual</strong>, renewing every year.</li>
+</ul>
+<p>The price is shown in the app and on the App Store, in your local currency, before you buy.</p>
+<p><strong>Apple processes the payment.</strong> You buy subscriptions through Apple’s in-app purchase system (StoreKit). Apple handles your payment method, billing, receipts, renewals and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</p>
+<p><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period.</p>
+<ul>
+<li>To manage or cancel it at any time, go to <strong>Settings › your name › Subscriptions</strong> on your iPhone or iPad, or to your Apple Account settings in the App Store.</li>
+<li>If you cancel, you keep access until the end of the period you’ve paid for.</li>
+<li>If you cancel during a free trial, you won’t be charged.</li>
+</ul>
+<p><strong>How your subscription is checked.</strong> CantoTalk uses Apple’s StoreKit to ask whether your Apple Account has an active subscription. Apple digitally signs this information, and the app checks it on your device.</p>
+<ul>
+<li>The app saves a small “unlocked” flag on your device so it opens quickly. This flag is not sent anywhere.</li>
+<li>If a subscription ends or Apple refunds it, the full course locks again the next time the app checks. Your progress stays on your device.</li>
+<li><strong>Restore Purchases</strong> asks Apple to re-sync your purchases.</li>
+</ul>
+<p><strong>What goes over the network.</strong> To show prices, or to start, restore or check a subscription, iOS’s App Store system communicates with Apple’s servers. That connection is between your device and Apple.</p>
+<p>CantoTalk sends no purchase, payment or other data to us. We receive only the aggregated sales and subscription reports that Apple gives all developers, and these don’t identify you.</p>
+<p><strong>Family Sharing.</strong> CantoTalk subscriptions are not shared through Family Sharing.</p>
+<p><strong>Refunds.</strong> Apple handles refund requests at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>.</p>
+<p>Apple’s standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
 <h2>Your choices</h2>
 <ul>
-<li>Deny microphone access in iOS Settings</li>
-<li>Delete the app to remove on-device progress and any leftover local recordings</li>
+<li>Deny microphone access in iOS Settings.</li>
+<li>Delete the app to remove your progress and any leftover recordings from your device.</li>
+<li>Cancel a subscription at any time in your Apple Account settings.</li>
 </ul>
-<h2>In-app purchase</h2>
-<p>CantoTalk 1.1 offers an optional one-time purchase, the CantoTalk course unlock (US$14.99 or the local equivalent shown in the App Store). It is a non-consumable purchase: you buy it once and it stays unlocked for your Apple Account.</p>
-<p><strong>Apple processes the payment.</strong> Purchases are made through the App Store using Apple’s in-app purchase system (StoreKit). Apple handles your payment method, billing details, receipts and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</p>
-<p><strong>How your purchase is checked.</strong> CantoTalk uses Apple’s StoreKit to ask whether your Apple Account owns the unlock. Apple digitally signs this information, and the app checks it on your device. It also checks Apple’s signed record of when you first installed the app, so people who installed before version 1.1 keep full access. The app saves a small “unlocked” flag on your device so it opens quickly; this flag is not sent anywhere. “Restore Purchases” asks Apple to re-sync your purchases.</p>
-<p><strong>What goes over the network.</strong> To show the price, complete a purchase, restore it or confirm it, iOS’s App Store / StoreKit system communicates with Apple’s servers. That communication is between your device and Apple. CantoTalk does not send purchase, payment or any other data to us or to any server we operate, and it contains no third-party purchase, analytics or advertising SDKs. We do not receive a list of who has bought the unlock, apart from the aggregated sales reports Apple gives all developers. Those reports don’t identify you.</p>
-<p><strong>Family Sharing.</strong> The course unlock is not shared through Family Sharing.</p>
-<p><strong>Refunds.</strong> Refund requests are handled by Apple at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>. If Apple refunds the purchase, the unlock is removed the next time the app checks with StoreKit.</p>
+<h2>Children</h2>
+<p>CantoTalk is not directed at children. We don’t knowingly collect personal information from anyone, including children.</p>
+<h2>Your privacy rights</h2>
+<p>Depending on where you live, privacy laws may give you rights over personal data a business holds about you. Examples are the EU and UK GDPR, California’s CCPA/CPRA, Canada’s PIPEDA and Hong Kong’s PDPO.</p>
+<p>CantoTalk sends no personal data to us, so we hold none about you to access, correct, delete or transfer. You can remove everything on your device by deleting the app. We do not sell or share personal information.</p>
+<p>If you have a privacy question, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
 <h2>Changes</h2>
-<p>Material changes will be reflected in this document and in the App Store privacy labels.</p>
+<p>If we change how CantoTalk handles data, we’ll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
 <h2>Contact</h2>
-<p>Questions: use the in-app Support link or email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
-<h2>Support</h2>
-<p>See <a href="../support/">Support</a> for contact details.</p>
+<p>Questions: use the in-app Support link, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or see <a href="../support/">Support</a>.</p>
+""".strip()
+
+# Receiptly 1.0 policy (Legal review 2026-10-30). Published by YuZa Studio; on-device only, StoreKit subscriptions.
+RECEIPTLY_PRIVACY = """
+<h1>Receiptly — Privacy Policy</h1>
+<p>Receiptly is published by YuZa Studio.</p>
+<p class="meta"><strong>Effective date:</strong> 30 October 2026<br>
+<strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
+<h2>The short version</h2>
+<ul>
+<li>Receiptly reads your receipts <strong>on your iPhone</strong>. Your receipts, photos and scanned text stay on your device.</li>
+<li>We <strong>do not collect</strong> any data. Receiptly has no account, no sign-in and no bank linking, and we run no server for it.</li>
+<li>Receiptly has <strong>no analytics, no advertising and no third-party SDKs</strong>, and it <strong>does not track you</strong>.</li>
+<li>Subscriptions are sold and billed by <strong>Apple</strong>. We never see your payment details.</li>
+</ul>
+<h2>What Receiptly is</h2>
+<p>Receiptly is an iPhone app for saving and organising receipts. You can add a receipt in several ways:</p>
+<ul>
+<li>take a photo, or scan a document with the camera</li>
+<li>pick photos</li>
+<li>open a file (PDF, image or email)</li>
+<li>paste text</li>
+<li>share a receipt to Receiptly from another app</li>
+</ul>
+<p>Receiptly reads the merchant, date, total and other details, and keeps everything on your device.</p>
+<h2>How your receipts are read: on your device</h2>
+<ul>
+<li>Receiptly reads text with Apple’s <strong>Vision</strong> framework, Apple’s document scanner (<strong>VisionKit</strong>) and <strong>PDFKit</strong> for PDFs. All of these run on your iPhone.</li>
+<li>On iOS 26 and later, where Apple’s on-device model is available, Receiptly may also use Apple’s <strong>on-device Foundation Models</strong> to help pick out receipt details. This model also runs on your iPhone.</li>
+<li>Receiptly does not send your receipts to us, to Apple or to anyone else to be read.</li>
+<li>Receiptly makes no network requests of its own. Reading receipts doesn’t need an internet connection.</li>
+</ul>
+<h2>Data stored on your device</h2>
+<p>Receiptly stores the following <strong>only on your iPhone</strong>, in the app’s own storage:</p>
+<ul>
+<li><strong>Saved receipts:</strong> the details Receiptly read (such as merchant, date, amounts and category), the receipt image or images, and the receipt text.</li>
+<li><strong>Learned categories:</strong> when you change a receipt’s category, Receiptly remembers that choice for that merchant so it can suggest it next time.</li>
+<li><strong>Usage counter:</strong> how many scans you’ve used this month on the free plan.</li>
+<li><strong>Subscription status:</strong> this is read from Apple’s StoreKit on your device (see Subscriptions).</li>
+</ul>
+<p>Receiptly doesn’t use iCloud, CloudKit or any other sync, and nothing is sent to any server of ours. If you back up your iPhone with iCloud Backup or a computer, iOS may include Receiptly’s data in that backup. You control those backups.</p>
+<h2>Sharing receipts into Receiptly (share extension)</h2>
+<p>You can share a receipt to Receiptly from other apps, for example Mail, Files, Photos or Safari. The extension accepts PDFs, images, emails, plain text and HTML. You can share up to 20 items at a time.</p>
+<ul>
+<li>The extension reads what you share <strong>on your device</strong>. It passes it to the Receiptly app through a private shared folder on your iPhone that only Receiptly and its extension can use.</li>
+<li>After Receiptly imports the receipt, it deletes that hand-off copy. If an import fails, or you’ve reached your monthly scan limit, the copy stays in the folder so Receiptly can try again later. The copy is also deleted when you delete the receipt.</li>
+<li><strong>Receiptly does not open web links.</strong> If you share a web address, Receiptly does not download it. It asks you to share the receipt itself, its PDF or a screenshot.</li>
+<li>Emails and documents can include personal details, such as your name, address or the last digits of a card number. These details stay on your device with the saved receipt.</li>
+</ul>
+<h2>Camera, photos and clipboard</h2>
+<ul>
+<li><strong>Camera:</strong> Receiptly asks for camera access only so you can photograph or scan receipts.</li>
+<li><strong>Photos:</strong> Receiptly reads only the photos you pick.</li>
+<li>You can turn off either permission at any time in iOS <strong>Settings › Receiptly</strong>. You can still add receipts in other ways.</li>
+<li>Receiptly reads the clipboard only when you choose <strong>Paste</strong>.</li>
+</ul>
+<h2>Exports</h2>
+<p>You can export receipts as a CSV file or a PDF. Exports are created on your device and go only where you send them with the iOS share sheet. Once you share an export, whoever receives it handles it under their own terms. Receiptly deletes its temporary export files when you delete receipts.</p>
+<h2>Subscriptions (Receiptly Pro)</h2>
+<p>Receiptly is free to use with a monthly scan limit. <strong>Receiptly Pro</strong> is an optional, auto-renewing subscription sold through Apple’s App Store in-app purchase system (StoreKit). It comes in two options:</p>
+<ul>
+<li><strong>Monthly</strong>, renewing every month. Apple may offer a reduced price for the first month, or a one-week free trial on some offers.</li>
+<li><strong>Annual</strong>, renewing every year.</li>
+</ul>
+<p>The price is shown in the app and on the App Store, in your local currency, before you buy.</p>
+<ul>
+<li><strong>Apple processes the payment.</strong> Apple handles your payment method, billing, receipts, renewals and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</li>
+<li><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period. You can manage or cancel it at any time in <strong>Settings › your name › Subscriptions</strong> on your iPhone, or in your Apple Account settings in the App Store. If you cancel, Pro stays active until the end of the period you’ve paid for. If you cancel during a free trial, you won’t be charged.</li>
+<li><strong>How your subscription is checked.</strong> Receiptly asks Apple’s StoreKit on your device whether your Apple Account has an active subscription. Apple signs this information, and Receiptly checks it <strong>on your device</strong>. We run no server that checks purchases.</li>
+<li><strong>Restore Purchases</strong> asks Apple to re-sync your purchases.</li>
+<li><strong>What goes over the network.</strong> To show prices, and to complete, restore or check a purchase, iOS’s App Store system talks to Apple’s servers. That connection is between your device and Apple. We only receive the aggregated sales reports Apple gives all developers, and these don’t identify you.</li>
+<li><strong>Family Sharing.</strong> Receiptly Pro subscriptions are not shared through Family Sharing.</li>
+<li><strong>Refunds</strong> are handled by Apple at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>.</li>
+</ul>
+<p>Apple’s standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
+<h2>Network, SDKs and tracking</h2>
+<ul>
+<li>Receiptly sends no receipts, images, text, categories, usage or other data to us or to any server we operate.</li>
+<li>Receiptly includes <strong>no analytics, advertising, crash-reporting or other third-party SDKs</strong>.</li>
+<li>Receiptly <strong>does not track you</strong> across apps or websites, and it doesn’t use the advertising identifier.</li>
+<li>If you choose to share analytics with app developers in iOS <strong>Settings › Privacy &amp; Security › Analytics &amp; Improvements</strong>, Apple may give us crash and usage statistics. Apple controls this, and the statistics don’t identify you to us.</li>
+</ul>
+<h2>Deleting your data</h2>
+<p>Your data is on your iPhone, so you control it:</p>
+<ul>
+<li><strong>Delete receipts</strong> in the app. This removes the saved receipt, its images and any hand-off copy.</li>
+<li><strong>Settings › Delete all receipts</strong> removes every saved receipt and image, the learned categories, and Receiptly’s temporary export files from this iPhone. This can’t be undone.</li>
+<li><strong>Settings › Forget learned categories</strong> clears only the learned categories.</li>
+<li><strong>Deleting the app</strong> removes all of its data from your iPhone.</li>
+</ul>
+<p>Deleting receipts doesn’t reset your monthly free-scan count, which also stays on your device.</p>
+<h2>Children</h2>
+<p>Receiptly is designed for adults keeping track of their purchases. It is not directed at children. We don’t knowingly collect personal information from anyone, including children.</p>
+<h2>Your privacy rights</h2>
+<p>Depending on where you live, privacy laws such as the EU and UK GDPR, California’s CCPA/CPRA, Canada’s PIPEDA and Hong Kong’s PDPO may give you rights over personal data a business holds about you.</p>
+<p>Receiptly sends no personal data to us, so we hold none about you to access, correct, delete or transfer. You can see and delete everything on your device using the steps above. We do not sell or share personal information.</p>
+<p>If you have a privacy question, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
+<h2>Changes to this policy</h2>
+<p>If we change how Receiptly handles data, we’ll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
+<h2>Contact</h2>
+<p>Email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or use the Support link in the app. See also <a href="../support/">Receiptly support</a>.</p>
 """.strip()
 
 # The ported policy named Calgary in "nursing-room listings in Calgary."
@@ -158,6 +286,7 @@ APPS = [
         "summary": CANTO_WHAT,
         "privacy": CANTO_PRIVACY,
         "published": True,
+        "hide_seller_footer": True,
     },
     {
         "slug": "littleatlas",
@@ -174,9 +303,10 @@ APPS = [
         "mark": "RC",
         "blurb": "Snap receipts and keep your spending organised.",
         "summary": "Snap receipts and keep your spending organised.",
-        "privacy": None,
-        "published": False,
+        "privacy": RECEIPTLY_PRIVACY,
+        "published": True,
         "described": True,
+        "hide_seller_footer": True,
     },
     {
         "slug": "chromaclear",
@@ -476,6 +606,7 @@ def chrome(
     body: str,
     absolute: bool = False,
     noindex: bool = False,
+    seller_footer: bool = True,
 ) -> str:
     prefix = prefix_for(depth, absolute)
     home = href(prefix, "")
@@ -490,6 +621,11 @@ def chrome(
     icon_svg = href(prefix, "svg/yuza-favicon-tile.svg")
     apple_icon = href(prefix, "apple-touch-icon.png")
     brand = lockup(prefix)
+    copyright_line = (
+        "© 2026 YuZa Studio. YuZa Studio is the studio name of Clay Cavanagh, the developer listed on the App Store."
+        if seller_footer
+        else "© 2026 YuZa Studio."
+    )
 
     def nav_link(label: str, link: str, key: str) -> str:
         current_attr = ' aria-current="page"' if current == key else ""
@@ -560,7 +696,7 @@ def chrome(
         <a class="footer-brand" href="{esc(home)}">{brand}</a>
         <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
         <p>This website does not use cookies or trackers.</p>
-        <p class="copyright">© 2026 YuZa Studio. YuZa Studio is the studio name of Clay Cavanagh, the developer listed on the App Store.</p>
+        <p class="copyright">{copyright_line}</p>
       </div>
       <nav class="footer-nav" aria-label="Footer">
         <ul>
@@ -905,6 +1041,7 @@ def build(dest: Path) -> None:
                 depth=2,
                 current=None,
                 body=indent(policy_body, 6),
+                seller_footer=not app.get("hide_seller_footer", False),
             ),
         )
 

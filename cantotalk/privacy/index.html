@@ -52,42 +52,69 @@
       </nav>
       <article class="prose">
         <h1>CantoTalk — Privacy Policy</h1>
-        <p>CantoTalk is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
-        <p class="meta"><strong>Effective date:</strong> 17 October 2026 (adds In-app purchase)<br>
+        <p>CantoTalk is published by YuZa Studio.</p>
+        <p class="meta"><strong>Effective date:</strong> 30 October 2026<br>
         <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
         <h2>What CantoTalk is</h2>
-        <p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Lessons, listening drills and self-recording work offline, without an account. The only network activity is Apple’s App Store system, which handles the optional in-app purchase (see In-app purchase below).</p>
+        <p>CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. Lessons, listening drills and self-recording work offline, and you don’t need an account.</p>
+        <p>The first lesson is free. The full course is available through optional auto-renewing subscriptions sold through Apple.</p>
+        <p>The only network activity is Apple’s App Store system, which handles those subscriptions (see Subscriptions below).</p>
         <h2>Data on your device</h2>
         <ul>
-        <li>Lesson completion, review progress and practice self-checks (UserDefaults)</li>
-        <li>Short-lived microphone recordings while you practise — stored only on this device and removed when you leave the practice screen or background the app (iOS may clean leftover temp files after an abrupt termination)</li>
-        <li>Whether the course unlock is active (a cached flag; Apple’s StoreKit remains the source of truth)</li>
+        <li>Lesson completion, review progress, practice self-checks and game scores.</li>
+        <li>Short-lived microphone recordings while you practise. These stay on this device and are removed when you leave the practice screen or send the app to the background. iOS may clean up leftover temporary files if the app closes unexpectedly.</li>
+        <li>Simple counters about the subscription offer screen, such as whether you’ve already seen or dismissed it, so the app doesn’t keep showing it.</li>
+        <li>Whether you have an active subscription. This is a cached flag; Apple’s StoreKit remains the source of truth.</li>
         </ul>
-        <p>We do not collect personal data, create accounts, or upload progress or recordings. Purchases are handled by Apple (see In-app purchase).</p>
+        <p>We do not collect personal data, create accounts, or upload progress or recordings.</p>
         <h2>Audio and microphone</h2>
-        <p>Text-to-speech uses Apple’s on-device <strong>AVSpeechSynthesizer</strong>. When you tap Record, the app uses <strong>AVAudioRecorder</strong> to capture audio locally so you can listen back. Recordings stay on the device and are not uploaded. Microphone permission is requested only when you record.</p>
+        <p>CantoTalk speaks phrases using Apple’s on-device text-to-speech (<strong>AVSpeechSynthesizer</strong>).</p>
+        <p>When you tap Record, CantoTalk uses <strong>AVAudioRecorder</strong> to record audio on your device so you can listen back. It does not use speech recognition. Recordings stay on the device and are not uploaded.</p>
+        <p>Microphone permission is requested only when you record.</p>
         <h2>Network, SDKs and tracking</h2>
-        <p>CantoTalk does not send your lessons, practice, progress, recordings or any other data to us or to any server we operate. To show prices and to process, restore and verify the optional in-app purchase, Apple’s App Store / StoreKit system on your device communicates with Apple’s servers. CantoTalk does not include analytics, advertising or other third-party SDKs. CantoTalk does not track you across apps or websites and does not use advertising identifiers.</p>
-        <h2>Children</h2>
-        <p>Not directed at children under 13.</p>
+        <p>CantoTalk does not send your lessons, practice, progress, recordings or any other data to us or to any server we operate. Apple’s App Store system on your device communicates with Apple’s servers to show prices and to process, restore and check subscriptions.</p>
+        <p>CantoTalk includes no analytics, advertising or other third-party SDKs. It does not track you across apps or websites and does not use advertising identifiers.</p>
+        <h2>Subscriptions</h2>
+        <p>CantoTalk offers optional <strong>auto-renewing subscriptions</strong> that unlock the full course:</p>
+        <ul>
+        <li><strong>Monthly</strong>, renewing every month. Apple may offer a reduced price for the first month, or a one-week free trial on some offers.</li>
+        <li><strong>Annual</strong>, renewing every year.</li>
+        </ul>
+        <p>The price is shown in the app and on the App Store, in your local currency, before you buy.</p>
+        <p><strong>Apple processes the payment.</strong> You buy subscriptions through Apple’s in-app purchase system (StoreKit). Apple handles your payment method, billing, receipts, renewals and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</p>
+        <p><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period.</p>
+        <ul>
+        <li>To manage or cancel it at any time, go to <strong>Settings › your name › Subscriptions</strong> on your iPhone or iPad, or to your Apple Account settings in the App Store.</li>
+        <li>If you cancel, you keep access until the end of the period you’ve paid for.</li>
+        <li>If you cancel during a free trial, you won’t be charged.</li>
+        </ul>
+        <p><strong>How your subscription is checked.</strong> CantoTalk uses Apple’s StoreKit to ask whether your Apple Account has an active subscription. Apple digitally signs this information, and the app checks it on your device.</p>
+        <ul>
+        <li>The app saves a small “unlocked” flag on your device so it opens quickly. This flag is not sent anywhere.</li>
+        <li>If a subscription ends or Apple refunds it, the full course locks again the next time the app checks. Your progress stays on your device.</li>
+        <li><strong>Restore Purchases</strong> asks Apple to re-sync your purchases.</li>
+        </ul>
+        <p><strong>What goes over the network.</strong> To show prices, or to start, restore or check a subscription, iOS’s App Store system communicates with Apple’s servers. That connection is between your device and Apple.</p>
+        <p>CantoTalk sends no purchase, payment or other data to us. We receive only the aggregated sales and subscription reports that Apple gives all developers, and these don’t identify you.</p>
+        <p><strong>Family Sharing.</strong> CantoTalk subscriptions are not shared through Family Sharing.</p>
+        <p><strong>Refunds.</strong> Apple handles refund requests at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>.</p>
+        <p>Apple’s standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
         <h2>Your choices</h2>
         <ul>
-        <li>Deny microphone access in iOS Settings</li>
-        <li>Delete the app to remove on-device progress and any leftover local recordings</li>
+        <li>Deny microphone access in iOS Settings.</li>
+        <li>Delete the app to remove your progress and any leftover recordings from your device.</li>
+        <li>Cancel a subscription at any time in your Apple Account settings.</li>
         </ul>
-        <h2>In-app purchase</h2>
-        <p>CantoTalk 1.1 offers an optional one-time purchase, the CantoTalk course unlock (US$14.99 or the local equivalent shown in the App Store). It is a non-consumable purchase: you buy it once and it stays unlocked for your Apple Account.</p>
-        <p><strong>Apple processes the payment.</strong> Purchases are made through the App Store using Apple’s in-app purchase system (StoreKit). Apple handles your payment method, billing details, receipts and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</p>
-        <p><strong>How your purchase is checked.</strong> CantoTalk uses Apple’s StoreKit to ask whether your Apple Account owns the unlock. Apple digitally signs this information, and the app checks it on your device. It also checks Apple’s signed record of when you first installed the app, so people who installed before version 1.1 keep full access. The app saves a small “unlocked” flag on your device so it opens quickly; this flag is not sent anywhere. “Restore Purchases” asks Apple to re-sync your purchases.</p>
-        <p><strong>What goes over the network.</strong> To show the price, complete a purchase, restore it or confirm it, iOS’s App Store / StoreKit system communicates with Apple’s servers. That communication is between your device and Apple. CantoTalk does not send purchase, payment or any other data to us or to any server we operate, and it contains no third-party purchase, analytics or advertising SDKs. We do not receive a list of who has bought the unlock, apart from the aggregated sales reports Apple gives all developers. Those reports don’t identify you.</p>
-        <p><strong>Family Sharing.</strong> The course unlock is not shared through Family Sharing.</p>
-        <p><strong>Refunds.</strong> Refund requests are handled by Apple at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>. If Apple refunds the purchase, the unlock is removed the next time the app checks with StoreKit.</p>
+        <h2>Children</h2>
+        <p>CantoTalk is not directed at children. We don’t knowingly collect personal information from anyone, including children.</p>
+        <h2>Your privacy rights</h2>
+        <p>Depending on where you live, privacy laws may give you rights over personal data a business holds about you. Examples are the EU and UK GDPR, California’s CCPA/CPRA, Canada’s PIPEDA and Hong Kong’s PDPO.</p>
+        <p>CantoTalk sends no personal data to us, so we hold none about you to access, correct, delete or transfer. You can remove everything on your device by deleting the app. We do not sell or share personal information.</p>
+        <p>If you have a privacy question, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
         <h2>Changes</h2>
-        <p>Material changes will be reflected in this document and in the App Store privacy labels.</p>
+        <p>If we change how CantoTalk handles data, we’ll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
         <h2>Contact</h2>
-        <p>Questions: use the in-app Support link or email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
-        <h2>Support</h2>
-        <p>See <a href="../support/">Support</a> for contact details.</p>
+        <p>Questions: use the in-app Support link, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or see <a href="../support/">Support</a>.</p>
             </article>
     </div>
   </main>
@@ -97,7 +124,7 @@
         <a class="footer-brand" href="../../"><img class="lockup lockup-light" src="../../svg/yuza-lockup-light.svg" alt="YuZa" width="1260" height="512"><img class="lockup lockup-dark" src="../../svg/yuza-lockup-dark.svg" alt="YuZa" width="1260" height="512"></a>
         <p><a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
         <p>This website does not use cookies or trackers.</p>
-        <p class="copyright">© 2026 YuZa Studio. YuZa Studio is the studio name of Clay Cavanagh, the developer listed on the App Store.</p>
+        <p class="copyright">© 2026 YuZa Studio.</p>
       </div>
       <nav class="footer-nav" aria-label="Footer">
         <ul>
