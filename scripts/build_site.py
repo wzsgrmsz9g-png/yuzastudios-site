@@ -141,16 +141,17 @@ CANTO_PRIVACY = """
 <p>Questions: use the in-app Support link, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or see <a href="../support/">Support</a>.</p>
 """.strip()
 
-# Receiptly 1.0 policy (Legal review 2026-10-30). Published by YuZa Studio; on-device only, StoreKit subscriptions.
+# Receiptly 1.0 policy v3 (effective 1 November 2026; Clam approved). Seller line names Clay Cavanagh; optional iCloud sync for Pro.
 RECEIPTLY_PRIVACY = """
 <h1>Receiptly — Privacy Policy</h1>
-<p>Receiptly is published by YuZa Studio.</p>
-<p class="meta"><strong>Effective date:</strong> 30 October 2026<br>
+<p>Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
+<p class="meta"><strong>Effective date:</strong> 1 November 2026<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>The short version</h2>
 <ul>
 <li>Receiptly reads your receipts <strong>on your iPhone</strong>. Your receipts, photos and scanned text stay on your device.</li>
-<li>We <strong>do not collect</strong> any data. Receiptly has no account, no sign-in and no bank linking, and we run no server for it.</li>
+<li>If you have <strong>Receiptly Pro</strong>, you can choose to turn on <strong>iCloud sync</strong>. Your receipts and photos are then also stored in <strong>your own private iCloud</strong>, using Apple’s CloudKit. We can’t see or access that copy.</li>
+<li>We <strong>do not collect</strong> any data. Receiptly has no account, no sign-in and no bank linking, and we run no server for it. iCloud sync uses your own iCloud, not a server of ours.</li>
 <li>Receiptly has <strong>no analytics, no advertising and no third-party SDKs</strong>, and it <strong>does not track you</strong>.</li>
 <li>Subscriptions are sold and billed by <strong>Apple</strong>. We never see your payment details.</li>
 </ul>
@@ -163,28 +164,44 @@ RECEIPTLY_PRIVACY = """
 <li>paste text</li>
 <li>share a receipt to Receiptly from another app</li>
 </ul>
-<p>Receiptly reads the merchant, date, total and other details, and keeps everything on your device.</p>
+<p>Receiptly reads the merchant, date, total and other details, and keeps everything on your device. If you turn on iCloud sync (Pro only), it also keeps a copy in your private iCloud.</p>
 <h2>How your receipts are read: on your device</h2>
 <ul>
 <li>Receiptly reads text with Apple’s <strong>Vision</strong> framework, Apple’s document scanner (<strong>VisionKit</strong>) and <strong>PDFKit</strong> for PDFs. All of these run on your iPhone.</li>
 <li>On iOS 26 and later, where Apple’s on-device model is available, Receiptly may also use Apple’s <strong>on-device Foundation Models</strong> to help pick out receipt details. This model also runs on your iPhone.</li>
 <li>Receiptly does not send your receipts to us, to Apple or to anyone else to be read.</li>
-<li>Receiptly makes no network requests of its own. Reading receipts doesn’t need an internet connection.</li>
+<li>Reading receipts doesn’t need an internet connection. Apart from optional iCloud sync, described below, Receiptly makes no network requests of its own.</li>
 </ul>
 <h2>Data stored on your device</h2>
-<p>Receiptly stores the following <strong>only on your iPhone</strong>, in the app’s own storage:</p>
+<p>Receiptly stores the following on your iPhone, in the app’s own storage:</p>
 <ul>
-<li><strong>Saved receipts:</strong> the details Receiptly read (such as merchant, date, amounts and category), the receipt image or images, and the receipt text.</li>
+<li><strong>Saved receipts:</strong> the details Receiptly read (such as merchant, date, amounts, currency and category), any notes you add, the receipt image or images, and the receipt text.</li>
 <li><strong>Learned categories:</strong> when you change a receipt’s category, Receiptly remembers that choice for that merchant so it can suggest it next time.</li>
 <li><strong>Usage counter:</strong> how many scans you’ve used this month on the free plan.</li>
 <li><strong>Subscription status:</strong> this is read from Apple’s StoreKit on your device (see Subscriptions).</li>
 </ul>
-<p>Receiptly doesn’t use iCloud, CloudKit or any other sync, and nothing is sent to any server of ours. If you back up your iPhone with iCloud Backup or a computer, iOS may include Receiptly’s data in that backup. You control those backups.</p>
+<p>Nothing is sent to any server of ours. If you back up your iPhone with iCloud Backup or a computer, iOS may include Receiptly’s data in that backup. You control those backups.</p>
+<h2>iCloud sync (optional, Receiptly Pro)</h2>
+<p>iCloud sync is <strong>off unless you turn it on</strong>, and it’s available only with an active Receiptly Pro subscription.</p>
+<ul>
+<li><strong>What syncs:</strong> your saved receipts (merchant, date, amounts, currency, category, any notes you add, and the receipt text) and their photos and extra pages.</li>
+<li><strong>What doesn’t sync:</strong> learned categories and your monthly free-scan count stay on each device.</li>
+<li><strong>Where it goes:</strong> your <strong>own private iCloud database</strong>, through Apple’s CloudKit. It’s tied to the Apple Account you’re signed in with, and it lets your receipts appear on your other devices signed in to the same Apple Account.</li>
+<li><strong>We can’t access it.</strong> YuZa Studio runs no server for sync. Data in your private iCloud database is stored by Apple for you, and we can’t read, download or delete it.</li>
+<li><strong>Apple’s terms apply.</strong> Apple stores your iCloud data under its own iCloud terms and privacy policy (<a href="https://www.apple.com/legal/privacy/">https://www.apple.com/legal/privacy/</a>). Synced receipts and photos use your iCloud storage.</li>
+<li><strong>Deletions sync too.</strong> While sync is on, receipts you delete in Receiptly, including with <strong>Delete all receipts</strong>, are also deleted from your iCloud and your other synced devices.</li>
+<li><strong>Turning sync off, or your Pro subscription ending,</strong> stops syncing. Nothing is deleted: the receipts on your iPhone stay there, and the copy in your iCloud stays in iCloud until you remove it. If you subscribe again and turn sync back on, Receiptly picks up where it left off and merges your receipts.</li>
+<li><strong>Removing your iCloud copy:</strong> in iOS go to <strong>Settings › [your name] › iCloud › Manage Storage</strong>, choose Receiptly, and delete its data. (Menu names can vary slightly between iOS versions.) Deleting the app from your iPhone doesn’t delete your iCloud copy.</li>
+</ul>
 <h2>Sharing receipts into Receiptly (share extension)</h2>
 <p>You can share a receipt to Receiptly from other apps, for example Mail, Files, Photos or Safari. The extension accepts PDFs, images, emails, plain text and HTML. You can share up to 20 items at a time.</p>
 <ul>
 <li>The extension reads what you share <strong>on your device</strong>. It passes it to the Receiptly app through a private shared folder on your iPhone that only Receiptly and its extension can use.</li>
-<li>After Receiptly imports the receipt, it deletes that hand-off copy. If an import fails, or you’ve reached your monthly scan limit, the copy stays in the folder so Receiptly can try again later. The copy is also deleted when you delete the receipt.</li>
+<li>After Receiptly imports the receipt, it deletes that hand-off copy.
+<ul>
+<li>If an import fails, or you’ve reached your monthly scan limit, the copy stays in the folder so Receiptly can try again later.</li>
+<li>The copy is also deleted when you delete the receipt.</li>
+</ul></li>
 <li><strong>Receiptly does not open web links.</strong> If you share a web address, Receiptly does not download it. It asks you to share the receipt itself, its PDF or a screenshot.</li>
 <li>Emails and documents can include personal details, such as your name, address or the last digits of a card number. These details stay on your device with the saved receipt.</li>
 </ul>
@@ -206,7 +223,12 @@ RECEIPTLY_PRIVACY = """
 <p>The price is shown in the app and on the App Store, in your local currency, before you buy.</p>
 <ul>
 <li><strong>Apple processes the payment.</strong> Apple handles your payment method, billing, receipts, renewals and refunds under its own terms and privacy policy. We never receive your card number, billing address or other payment information.</li>
-<li><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period. You can manage or cancel it at any time in <strong>Settings › your name › Subscriptions</strong> on your iPhone, or in your Apple Account settings in the App Store. If you cancel, Pro stays active until the end of the period you’ve paid for. If you cancel during a free trial, you won’t be charged.</li>
+<li><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period.
+<ul>
+<li>You can manage or cancel it at any time in <strong>Settings › [your name] › Subscriptions</strong> on your iPhone, or in your Apple Account settings in the App Store.</li>
+<li>If you cancel, Pro stays active until the end of the period you’ve paid for.</li>
+<li>If you cancel during a free trial, you won’t be charged.</li>
+</ul></li>
 <li><strong>How your subscription is checked.</strong> Receiptly asks Apple’s StoreKit on your device whether your Apple Account has an active subscription. Apple signs this information, and Receiptly checks it <strong>on your device</strong>. We run no server that checks purchases.</li>
 <li><strong>Restore Purchases</strong> asks Apple to re-sync your purchases.</li>
 <li><strong>What goes over the network.</strong> To show prices, and to complete, restore or check a purchase, iOS’s App Store system talks to Apple’s servers. That connection is between your device and Apple. We only receive the aggregated sales reports Apple gives all developers, and these don’t identify you.</li>
@@ -216,30 +238,34 @@ RECEIPTLY_PRIVACY = """
 <p>Apple’s standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
 <h2>Network, SDKs and tracking</h2>
 <ul>
-<li>Receiptly sends no receipts, images, text, categories, usage or other data to us or to any server we operate.</li>
+<li>Receiptly sends no receipts, images, text, categories, usage or other data to us or to any server we operate. If you turn on iCloud sync, your receipts and images go only to your own private iCloud (see iCloud sync).</li>
 <li>Receiptly includes <strong>no analytics, advertising, crash-reporting or other third-party SDKs</strong>.</li>
 <li>Receiptly <strong>does not track you</strong> across apps or websites, and it doesn’t use the advertising identifier.</li>
 <li>If you choose to share analytics with app developers in iOS <strong>Settings › Privacy &amp; Security › Analytics &amp; Improvements</strong>, Apple may give us crash and usage statistics. Apple controls this, and the statistics don’t identify you to us.</li>
 </ul>
+<h2>Ratings</h2>
+<p>Receiptly may show Apple’s standard in-app rating prompt (StoreKit). Apple runs that prompt. We don’t receive your rating or any personal data through it. Receiptly has no in-app link to write a review.</p>
 <h2>Deleting your data</h2>
-<p>Your data is on your iPhone, so you control it:</p>
+<p>Your data is on your iPhone (and, if you turn on sync, in your own iCloud), so you control it:</p>
 <ul>
 <li><strong>Delete receipts</strong> in the app. This removes the saved receipt, its images and any hand-off copy.</li>
-<li><strong>Settings › Delete all receipts</strong> removes every saved receipt and image, the learned categories, and Receiptly’s temporary export files from this iPhone. This can’t be undone.</li>
+<li><strong>Settings › Delete all receipts</strong> removes every saved receipt and image, the learned categories, and Receiptly’s temporary export files from this iPhone. If iCloud sync is on, it also removes those receipts and images from your iCloud and your other synced devices. This can’t be undone.</li>
 <li><strong>Settings › Forget learned categories</strong> clears only the learned categories.</li>
-<li><strong>Deleting the app</strong> removes all of its data from your iPhone.</li>
+<li><strong>Deleting the app</strong> removes all of its data from your iPhone, but not any copy in your iCloud.</li>
+<li><strong>Your iCloud copy:</strong> see "Removing your iCloud copy" under iCloud sync.</li>
 </ul>
+<p>While iCloud sync is on, deleting receipts in the app also deletes them from iCloud and your other synced devices.</p>
 <p>Deleting receipts doesn’t reset your monthly free-scan count, which also stays on your device.</p>
 <h2>Children</h2>
 <p>Receiptly is designed for adults keeping track of their purchases. It is not directed at children. We don’t knowingly collect personal information from anyone, including children.</p>
 <h2>Your privacy rights</h2>
 <p>Depending on where you live, privacy laws such as the EU and UK GDPR, California’s CCPA/CPRA, Canada’s PIPEDA and Hong Kong’s PDPO may give you rights over personal data a business holds about you.</p>
-<p>Receiptly sends no personal data to us, so we hold none about you to access, correct, delete or transfer. You can see and delete everything on your device using the steps above. We do not sell or share personal information.</p>
+<p>Receiptly sends no personal data to us, so we hold none about you to access, correct, delete or transfer. If you use iCloud sync, that copy is held by Apple in your own iCloud account, not by us. You can see and delete everything on your device and in your iCloud using the steps above. We do not sell or share personal information.</p>
 <p>If you have a privacy question, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
 <h2>Changes to this policy</h2>
 <p>If we change how Receiptly handles data, we’ll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
 <h2>Contact</h2>
-<p>Email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or use the Support link in the app. See also <a href="../support/">Receiptly support</a>.</p>
+<p>Email us at <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>. See also <a href="https://yuzastudios.com/receiptly/support/">https://yuzastudios.com/receiptly/support/</a>.</p>
 """.strip()
 
 # The ported policy named Calgary in "nursing-room listings in Calgary."

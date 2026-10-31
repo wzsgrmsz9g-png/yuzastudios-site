@@ -336,8 +336,8 @@ def check_legal() -> None:
         "upload progress or recordings",
     ]
     receipt_bits = [
-        "Effective date:</strong> 30 October 2026",
-        "Receiptly is published by YuZa Studio.",
+        "Effective date:</strong> 1 November 2026",
+        "Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",
         "Receiptly reads your receipts <strong>on your iPhone</strong>.",
         "Receiptly Pro subscriptions are not shared through Family Sharing.",
         "Receiptly makes no network requests of its own.",
@@ -362,7 +362,10 @@ def check_legal() -> None:
 
     if "processed by Apple" in atlas or "in-app purchase" in atlas.lower():
         fail("Little Atlas privacy gained purchase language")
+    seller_lines = ("Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",)
     for label, text in (("receiptly", receipt), ("cantotalk", canto)):
+        for line in seller_lines:
+            text = text.replace(line, "")
         for bad in ("has not been published", "14.99", "Clay Cavanagh", "clam.app", "[CONFIRM", "governing law", "+1 587"):
             if bad in text:
                 fail(f"{label} privacy must not contain: {bad}")
