@@ -29,7 +29,9 @@ FORGE_WHAT = (
 CANTO_WHAT = (
     "CantoTalk helps you practise everyday Hong Kong Cantonese on iPhone and iPad. "
     "Lessons, listening drills and self-recording work offline, without an account. "
-    "The full course is a one-time in-app purchase."
+    "The first lesson is free; unlock the full course with an auto-renewable subscription "
+    "(monthly or yearly). Prices are shown in the App Store for your country or region "
+    "before you confirm. No account needed."
 )
 ATLAS_WHAT = (
     "Discover family-friendly places, playgrounds and nursing rooms wherever you are."
