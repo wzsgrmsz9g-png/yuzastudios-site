@@ -430,6 +430,14 @@ main:focus {
   width: min(100%, 100%);
 }
 
+/* Homepage app list only: the Forge plate would otherwise run the full card
+   width and tower over the other cards. Cap it to roughly the same visual
+   height as the 16.5rem device-framed cards. The /forge/ gallery does not
+   use .card-shot, so it is unchanged. */
+.app-list .card-shot.is-plate {
+  width: min(100%, 16rem);
+}
+
 .frame-device,
 .frame-plate {
   margin: 0;
