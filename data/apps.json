@@ -8,7 +8,7 @@
     { "slug": "forge", "appleId": "6816285160", "live": false },
     { "slug": "cantotalk", "appleId": "6812961427", "live": false },
     { "slug": "littleatlas", "appleId": "6815871041", "live": false },
-    { "slug": "receiptly", "appleId": null, "live": false },
+    { "slug": "receiptly", "appleId": "6820168505", "live": true },
     { "slug": "chromaclear", "appleId": null, "live": false }
   ]
 }
