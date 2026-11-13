@@ -336,8 +336,8 @@ def check_legal() -> None:
         "upload progress or recordings",
     ]
     receipt_bits = [
-        # Pocketslip 1.1 (Legal POCKETSLIP-WEB-PRIVACY-PAGE-DRAFT-2026-11-13): date placeholder until 1.1 go-live.
-        "Effective date:</strong> [[EFFECTIVE DATE: set on 1.1 go-live]]",
+        # Pocketslip 1.1 (Legal POCKETSLIP-WEB-PRIVACY-PAGE-DRAFT-2026-11-13): same label and date as the app.
+        "Effective date:</strong> 13 November 2026",
         "Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",
         "Pocketslip reads your receipts <strong>on your iPhone</strong>.",
         "Pocketslip Pro subscriptions are not shared through Family Sharing.",

@@ -146,12 +146,12 @@ CANTO_PRIVACY = """
 """.strip()
 
 # Pocketslip (formerly Receiptly) 1.1 policy: Legal POCKETSLIP-WEB-PRIVACY-PAGE-DRAFT-2026-11-13 (Clam approved, CEO c0b586a2).
-# Same words as the app's PrivacyPolicyText.swift; straight apostrophes to match it. Effective date is a placeholder until 1.1 go-live.
+# Same words as the app's PrivacyPolicyText.swift; straight apostrophes to match it. Date label 'Effective date' (go-live day), same date as the app.
 # Path stays /receiptly/ this version. NOT LIVE until Clam merges on 1.1 go-live day.
 RECEIPTLY_PRIVACY = """
 <h1>Pocketslip — Privacy Policy</h1>
 <p>Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
-<p class="meta"><strong>Effective date:</strong> [[EFFECTIVE DATE: set on 1.1 go-live]]<br>
+<p class="meta"><strong>Effective date:</strong> 13 November 2026<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>The short version</h2>
 <ul>
