@@ -145,81 +145,83 @@ CANTO_PRIVACY = """
 <p>Questions: use the in-app Support link, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>, or see <a href="../support/">Support</a>.</p>
 """.strip()
 
-# Receiptly 1.0 policy v3 (effective 1 November 2026; Clam approved). Seller line names Clay Cavanagh; optional iCloud sync for Pro.
+# Pocketslip (formerly Receiptly) 1.1 policy: Legal POCKETSLIP-WEB-PRIVACY-PAGE-DRAFT-2026-11-13 (Clam approved, CEO c0b586a2).
+# Same words as the app's PrivacyPolicyText.swift; straight apostrophes to match it. Effective date is a placeholder until 1.1 go-live.
+# Path stays /receiptly/ this version. NOT LIVE until Clam merges on 1.1 go-live day.
 RECEIPTLY_PRIVACY = """
-<h1>Receiptly — Privacy Policy</h1>
-<p>Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
-<p class="meta"><strong>Effective date:</strong> 1 November 2026<br>
+<h1>Pocketslip — Privacy Policy</h1>
+<p>Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).</p>
+<p class="meta"><strong>Effective date:</strong> [[EFFECTIVE DATE: set on 1.1 go-live]]<br>
 <strong>Contact:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <h2>The short version</h2>
 <ul>
-<li>Receiptly reads your receipts <strong>on your iPhone</strong>. Your receipts, photos and scanned text stay on your device.</li>
-<li>If you have <strong>Receiptly Pro</strong>, you can choose to turn on <strong>iCloud sync</strong>. Your receipts and photos are then also stored in <strong>your own private iCloud</strong>, using Apple’s CloudKit. We can’t see or access that copy.</li>
-<li>We <strong>do not collect</strong> any data. Receiptly has no account, no sign-in and no bank linking, and we run no server for it. iCloud sync uses your own iCloud, not a server of ours.</li>
-<li>Receiptly has <strong>no analytics, no advertising and no third-party SDKs</strong>, and it <strong>does not track you</strong>.</li>
+<li>Pocketslip reads your receipts <strong>on your iPhone</strong>. Your receipts, photos and scanned text stay on your device.</li>
+<li>If you have <strong>Pocketslip Pro</strong>, you can choose to turn on <strong>iCloud sync</strong>. Your receipts and photos are then also stored in <strong>your own private iCloud</strong>, using Apple's CloudKit. We can't see or access that copy.</li>
+<li>We <strong>do not collect</strong> any data. Pocketslip has no account, no sign-in and no bank linking, and we run no server for it. iCloud sync uses your own iCloud, not a server of ours.</li>
+<li>Pocketslip has <strong>no analytics, no advertising and no third-party SDKs</strong>, and it <strong>does not track you</strong>.</li>
 <li>Subscriptions are sold and billed by <strong>Apple</strong>. We never see your payment details.</li>
 </ul>
-<h2>What Receiptly is</h2>
-<p>Receiptly is an iPhone app for saving and organising receipts. You can add a receipt in several ways:</p>
+<h2>What Pocketslip is</h2>
+<p>Pocketslip is an iPhone app for saving and organising receipts. You can add a receipt in several ways:</p>
 <ul>
 <li>take a photo, or scan a document with the camera</li>
 <li>pick photos</li>
 <li>open a file (PDF, image or email)</li>
 <li>paste text</li>
-<li>share a receipt to Receiptly from another app</li>
+<li>share a receipt to Pocketslip from another app</li>
 </ul>
-<p>Receiptly reads the merchant, date, total and other details, and keeps everything on your device. If you turn on iCloud sync (Pro only), it also keeps a copy in your private iCloud.</p>
+<p>Pocketslip reads the merchant, date, total and other details, and keeps everything on your device. If you turn on iCloud sync (Pro only), it also keeps a copy in your private iCloud.</p>
 <h2>How your receipts are read: on your device</h2>
 <ul>
-<li>Receiptly reads text with Apple’s <strong>Vision</strong> framework, Apple’s document scanner (<strong>VisionKit</strong>) and <strong>PDFKit</strong> for PDFs. All of these run on your iPhone.</li>
-<li>On iOS 26 and later, where Apple’s on-device model is available, Receiptly may also use Apple’s <strong>on-device Foundation Models</strong> to help pick out receipt details. This model also runs on your iPhone.</li>
-<li>Receiptly does not send your receipts to us, to Apple or to anyone else to be read.</li>
-<li>Reading receipts doesn’t need an internet connection. Apart from optional iCloud sync, described below, Receiptly makes no network requests of its own.</li>
+<li>Pocketslip reads text with Apple's <strong>Vision</strong> framework, Apple's document scanner (<strong>VisionKit</strong>) and <strong>PDFKit</strong> for PDFs. All of these run on your iPhone.</li>
+<li>On iOS 26 and later, where Apple's on-device model is available, Pocketslip may also use Apple's <strong>on-device Foundation Models</strong> to help pick out receipt details. This model also runs on your iPhone.</li>
+<li>Pocketslip does not send your receipts to us, to Apple or to anyone else to be read.</li>
+<li>Reading receipts doesn't need an internet connection. Apart from optional iCloud sync, described below, Pocketslip makes no network requests of its own.</li>
 </ul>
 <h2>Data stored on your device</h2>
-<p>Receiptly stores the following on your iPhone, in the app’s own storage:</p>
+<p>Pocketslip stores the following on your iPhone, in the app's own storage:</p>
 <ul>
-<li><strong>Saved receipts:</strong> the details Receiptly read (such as merchant, date, amounts, currency and category), any notes you add, the receipt image or images, and the receipt text.</li>
-<li><strong>Learned categories:</strong> when you change a receipt’s category, Receiptly remembers that choice for that merchant so it can suggest it next time.</li>
-<li><strong>Usage counter:</strong> how many scans you’ve used this month on the free plan.</li>
-<li><strong>Subscription status:</strong> this is read from Apple’s StoreKit on your device (see Subscriptions).</li>
+<li><strong>Saved receipts:</strong> the details Pocketslip read (such as merchant, date, amounts, currency and category), any notes you add, the receipt image or images, and the receipt text.</li>
+<li><strong>Learned categories:</strong> when you change a receipt's category, Pocketslip remembers that choice for that merchant so it can suggest it next time.</li>
+<li><strong>Usage counter:</strong> how many scans you've used this month on the free plan.</li>
+<li><strong>Subscription status:</strong> this is read from Apple's StoreKit on your device (see Subscriptions).</li>
 </ul>
-<p>Nothing is sent to any server of ours. If you back up your iPhone with iCloud Backup or a computer, iOS may include Receiptly’s data in that backup. You control those backups.</p>
-<h2>iCloud sync (optional, Receiptly Pro)</h2>
-<p>iCloud sync is <strong>off unless you turn it on</strong>, and it’s available only with an active Receiptly Pro subscription.</p>
+<p>Nothing is sent to any server of ours. If you back up your iPhone with iCloud Backup or a computer, iOS may include Pocketslip's data in that backup. You control those backups.</p>
+<h2>iCloud sync (optional, Pocketslip Pro)</h2>
+<p>iCloud sync is <strong>off unless you turn it on</strong>, and it's available only with an active Pocketslip Pro subscription.</p>
 <ul>
 <li><strong>What syncs:</strong> your saved receipts (merchant, date, amounts, currency, category, any notes you add, and the receipt text) and their photos and extra pages.</li>
-<li><strong>What doesn’t sync:</strong> learned categories and your monthly free-scan count stay on each device.</li>
-<li><strong>Where it goes:</strong> your <strong>own private iCloud database</strong>, through Apple’s CloudKit. It’s tied to the Apple Account you’re signed in with, and it lets your receipts appear on your other devices signed in to the same Apple Account.</li>
-<li><strong>We can’t access it.</strong> YuZa Studio runs no server for sync. Data in your private iCloud database is stored by Apple for you, and we can’t read, download or delete it.</li>
-<li><strong>Apple’s terms apply.</strong> Apple stores your iCloud data under its own iCloud terms and privacy policy (<a href="https://www.apple.com/legal/privacy/">https://www.apple.com/legal/privacy/</a>). Synced receipts and photos use your iCloud storage.</li>
-<li><strong>Deletions sync too.</strong> While sync is on, receipts you delete in Receiptly, including with <strong>Delete all receipts</strong>, are also deleted from your iCloud and your other synced devices.</li>
-<li><strong>Turning sync off, or your Pro subscription ending,</strong> stops syncing. Nothing is deleted: the receipts on your iPhone stay there, and the copy in your iCloud stays in iCloud until you remove it. If you subscribe again and turn sync back on, Receiptly picks up where it left off and merges your receipts.</li>
-<li><strong>Removing your iCloud copy:</strong> in iOS go to <strong>Settings › [your name] › iCloud › Manage Storage</strong>, choose Receiptly, and delete its data. (Menu names can vary slightly between iOS versions.) Deleting the app from your iPhone doesn’t delete your iCloud copy.</li>
+<li><strong>What doesn't sync:</strong> learned categories and your monthly free-scan count stay on each device.</li>
+<li><strong>Where it goes:</strong> your <strong>own private iCloud database</strong>, through Apple's CloudKit. It's tied to the Apple Account you're signed in with, and it lets your receipts appear on your other devices signed in to the same Apple Account.</li>
+<li><strong>We can't access it.</strong> YuZa Studio runs no server for sync. Data in your private iCloud database is stored by Apple for you, and we can't read, download or delete it.</li>
+<li><strong>Apple's terms apply.</strong> Apple stores your iCloud data under its own iCloud terms and privacy policy (<a href="https://www.apple.com/legal/privacy/">https://www.apple.com/legal/privacy/</a>). Synced receipts and photos use your iCloud storage.</li>
+<li><strong>Deletions sync too.</strong> While sync is on, receipts you delete in Pocketslip, including with <strong>Delete all receipts</strong>, are also deleted from your iCloud and your other synced devices.</li>
+<li><strong>Turning sync off, or your Pro subscription ending,</strong> stops syncing. Nothing is deleted: the receipts on your iPhone stay there, and the copy in your iCloud stays in iCloud until you remove it. If you subscribe again and turn sync back on, Pocketslip picks up where it left off and merges your receipts.</li>
+<li><strong>Removing your iCloud copy:</strong> in iOS go to <strong>Settings › [your name] › iCloud › Manage Storage</strong>, choose Pocketslip (it may be listed as Receiptly), and delete its data. (Menu names can vary slightly between iOS versions.) Deleting the app from your iPhone doesn't delete your iCloud copy.</li>
 </ul>
-<h2>Sharing receipts into Receiptly (share extension)</h2>
-<p>You can share a receipt to Receiptly from other apps, for example Mail, Files, Photos or Safari. The extension accepts PDFs, images, emails, plain text and HTML. You can share up to 20 items at a time.</p>
+<h2>Sharing receipts into Pocketslip (share extension)</h2>
+<p>You can share a receipt to Pocketslip from other apps, for example Mail, Files, Photos or Safari. The extension accepts PDFs, images, emails, plain text and HTML. You can share up to 20 items at a time.</p>
 <ul>
-<li>The extension reads what you share <strong>on your device</strong>. It passes it to the Receiptly app through a private shared folder on your iPhone that only Receiptly and its extension can use.</li>
-<li>After Receiptly imports the receipt, it deletes that hand-off copy.
+<li>The extension reads what you share <strong>on your device</strong>. It passes it to the Pocketslip app through a private shared folder on your iPhone that only Pocketslip and its extension can use.</li>
+<li>After Pocketslip imports the receipt, it deletes that hand-off copy.
 <ul>
-<li>If an import fails, or you’ve reached your monthly scan limit, the copy stays in the folder so Receiptly can try again later.</li>
+<li>If an import fails, or you've reached your monthly scan limit, the copy stays in the folder so Pocketslip can try again later.</li>
 <li>The copy is also deleted when you delete the receipt.</li>
 </ul></li>
-<li><strong>Receiptly does not open web links.</strong> If you share a web address, Receiptly does not download it. It asks you to share the receipt itself, its PDF or a screenshot.</li>
+<li><strong>Pocketslip does not open web links.</strong> If you share a web address, Pocketslip does not download it. It asks you to share the receipt itself, its PDF or a screenshot.</li>
 <li>Emails and documents can include personal details, such as your name, address or the last digits of a card number. These details stay on your device with the saved receipt.</li>
 </ul>
 <h2>Camera, photos and clipboard</h2>
 <ul>
-<li><strong>Camera:</strong> Receiptly asks for camera access only so you can photograph or scan receipts.</li>
-<li><strong>Photos:</strong> Receiptly reads only the photos you pick.</li>
-<li>You can turn off either permission at any time in iOS <strong>Settings › Receiptly</strong>. You can still add receipts in other ways.</li>
-<li>Receiptly reads the clipboard only when you choose <strong>Paste</strong>.</li>
+<li><strong>Camera:</strong> Pocketslip asks for camera access only so you can photograph or scan receipts.</li>
+<li><strong>Photos:</strong> Pocketslip reads only the photos you pick.</li>
+<li>You can turn off either permission at any time in iOS <strong>Settings › Pocketslip</strong>. You can still add receipts in other ways.</li>
+<li>Pocketslip reads the clipboard only when you choose <strong>Paste</strong>.</li>
 </ul>
 <h2>Exports</h2>
-<p>You can export receipts as a CSV file or a PDF. Exports are created on your device and go only where you send them with the iOS share sheet. Once you share an export, whoever receives it handles it under their own terms. Receiptly deletes its temporary export files when you delete receipts.</p>
-<h2>Subscriptions (Receiptly Pro)</h2>
-<p>Receiptly is free to use with a monthly scan limit. <strong>Receiptly Pro</strong> is an optional, auto-renewing subscription sold through Apple’s App Store in-app purchase system (StoreKit). It comes in two options:</p>
+<p>You can export receipts as a CSV file or a PDF. Exports are created on your device and go only where you send them with the iOS share sheet. Once you share an export, whoever receives it handles it under their own terms. Pocketslip deletes its temporary export files when you delete receipts.</p>
+<h2>Subscriptions (Pocketslip Pro)</h2>
+<p>Pocketslip is free to use with a monthly scan limit. <strong>Pocketslip Pro</strong> is an optional, auto-renewing subscription sold through Apple's App Store in-app purchase system (StoreKit). It comes in two options:</p>
 <ul>
 <li><strong>Monthly</strong>, renewing every month. Apple may offer a reduced price for the first month, or a one-week free trial on some offers.</li>
 <li><strong>Annual</strong>, renewing every year.</li>
@@ -230,44 +232,44 @@ RECEIPTLY_PRIVACY = """
 <li><strong>Renewal and cancellation.</strong> A subscription renews automatically, and your Apple Account is charged, unless you cancel at least 24 hours before the end of the current period.
 <ul>
 <li>You can manage or cancel it at any time in <strong>Settings › [your name] › Subscriptions</strong> on your iPhone, or in your Apple Account settings in the App Store.</li>
-<li>If you cancel, Pro stays active until the end of the period you’ve paid for.</li>
-<li>If you cancel during a free trial, you won’t be charged.</li>
+<li>If you cancel, Pro stays active until the end of the period you've paid for.</li>
+<li>If you cancel during a free trial, you won't be charged.</li>
 </ul></li>
-<li><strong>How your subscription is checked.</strong> Receiptly asks Apple’s StoreKit on your device whether your Apple Account has an active subscription. Apple signs this information, and Receiptly checks it <strong>on your device</strong>. We run no server that checks purchases.</li>
+<li><strong>How your subscription is checked.</strong> Pocketslip asks Apple's StoreKit on your device whether your Apple Account has an active subscription. Apple signs this information, and Pocketslip checks it <strong>on your device</strong>. We run no server that checks purchases.</li>
 <li><strong>Restore Purchases</strong> asks Apple to re-sync your purchases.</li>
-<li><strong>What goes over the network.</strong> To show prices, and to complete, restore or check a purchase, iOS’s App Store system talks to Apple’s servers. That connection is between your device and Apple. We only receive the aggregated sales reports Apple gives all developers, and these don’t identify you.</li>
-<li><strong>Family Sharing.</strong> Receiptly Pro subscriptions are not shared through Family Sharing.</li>
-<li><strong>Refunds</strong> are handled by Apple at <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>.</li>
+<li><strong>What goes over the network.</strong> To show prices, and to complete, restore or check a purchase, iOS's App Store system talks to Apple's servers. That connection is between your device and Apple. We only receive the aggregated sales reports Apple gives all developers, and these don't identify you.</li>
+<li><strong>Family Sharing.</strong> Pocketslip Pro subscriptions are not shared through Family Sharing.</li>
+<li><strong>Refunds</strong> are handled by Apple at reportaproblem.apple.com (<a href="https://reportaproblem.apple.com/">https://reportaproblem.apple.com/</a>).</li>
 </ul>
-<p>Apple’s standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
+<p>Apple's standard Terms of Use (EULA) apply: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
 <h2>Network, SDKs and tracking</h2>
 <ul>
-<li>Receiptly sends no receipts, images, text, categories, usage or other data to us or to any server we operate. If you turn on iCloud sync, your receipts and images go only to your own private iCloud (see iCloud sync).</li>
-<li>Receiptly includes <strong>no analytics, advertising, crash-reporting or other third-party SDKs</strong>.</li>
-<li>Receiptly <strong>does not track you</strong> across apps or websites, and it doesn’t use the advertising identifier.</li>
-<li>If you choose to share analytics with app developers in iOS <strong>Settings › Privacy &amp; Security › Analytics &amp; Improvements</strong>, Apple may give us crash and usage statistics. Apple controls this, and the statistics don’t identify you to us.</li>
+<li>Pocketslip sends no receipts, images, text, categories, usage or other data to us or to any server we operate. If you turn on iCloud sync, your receipts and images go only to your own private iCloud (see iCloud sync).</li>
+<li>Pocketslip includes <strong>no analytics, advertising, crash-reporting or other third-party SDKs</strong>.</li>
+<li>Pocketslip <strong>does not track you</strong> across apps or websites, and it doesn't use the advertising identifier.</li>
+<li>If you choose to share analytics with app developers in iOS <strong>Settings › Privacy &amp; Security › Analytics &amp; Improvements</strong>, Apple may give us crash and usage statistics. Apple controls this, and the statistics don't identify you to us.</li>
 </ul>
 <h2>Ratings</h2>
-<p>Receiptly may show Apple’s standard in-app rating prompt (StoreKit). Apple runs that prompt. We don’t receive your rating or any personal data through it. Receiptly has no in-app link to write a review.</p>
+<p>Pocketslip may show Apple's standard in-app rating prompt (StoreKit). Apple runs that prompt. We don't receive your rating or any personal data through it. The Write a review link in Settings opens Pocketslip's page in the App Store, where Apple handles your review under its own terms, and Pocketslip sends us no data when you use it.</p>
 <h2>Deleting your data</h2>
 <p>Your data is on your iPhone (and, if you turn on sync, in your own iCloud), so you control it:</p>
 <ul>
 <li><strong>Delete receipts</strong> in the app. This removes the saved receipt, its images and any hand-off copy.</li>
-<li><strong>Settings › Delete all receipts</strong> removes every saved receipt and image, the learned categories, and Receiptly’s temporary export files from this iPhone. If iCloud sync is on, it also removes those receipts and images from your iCloud and your other synced devices. This can’t be undone.</li>
+<li><strong>Settings › Delete all receipts</strong> removes every saved receipt and image, the learned categories, and Pocketslip's temporary export files from this iPhone. If iCloud sync is on, it also removes those receipts and images from your iCloud and your other synced devices. This can't be undone.</li>
 <li><strong>Settings › Forget learned categories</strong> clears only the learned categories.</li>
 <li><strong>Deleting the app</strong> removes all of its data from your iPhone, but not any copy in your iCloud.</li>
 <li><strong>Your iCloud copy:</strong> see "Removing your iCloud copy" under iCloud sync.</li>
 </ul>
 <p>While iCloud sync is on, deleting receipts in the app also deletes them from iCloud and your other synced devices.</p>
-<p>Deleting receipts doesn’t reset your monthly free-scan count, which also stays on your device.</p>
+<p>Deleting receipts doesn't reset your monthly free-scan count, which also stays on your device.</p>
 <h2>Children</h2>
-<p>Receiptly is designed for adults keeping track of their purchases. It is not directed at children. We don’t knowingly collect personal information from anyone, including children.</p>
+<p>Pocketslip is designed for adults keeping track of their purchases. It is not directed at children. We don't knowingly collect personal information from anyone, including children.</p>
 <h2>Your privacy rights</h2>
-<p>Depending on where you live, privacy laws such as the EU and UK GDPR, California’s CCPA/CPRA, Canada’s PIPEDA and Hong Kong’s PDPO may give you rights over personal data a business holds about you.</p>
-<p>Receiptly sends no personal data to us, so we hold none about you to access, correct, delete or transfer. If you use iCloud sync, that copy is held by Apple in your own iCloud account, not by us. You can see and delete everything on your device and in your iCloud using the steps above. We do not sell or share personal information.</p>
+<p>Depending on where you live, privacy laws such as the EU and UK GDPR, California's CCPA/CPRA, Canada's PIPEDA and Hong Kong's PDPO may give you rights over personal data a business holds about you.</p>
+<p>Pocketslip sends no personal data to us, so we hold none about you to access, correct, delete or transfer. If you use iCloud sync, that copy is held by Apple in your own iCloud account, not by us. You can see and delete everything on your device and in your iCloud using the steps above. We do not sell or share personal information.</p>
 <p>If you have a privacy question, email <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>.</p>
 <h2>Changes to this policy</h2>
-<p>If we change how Receiptly handles data, we’ll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
+<p>If we change how Pocketslip handles data, we'll update this policy and its effective date before the change ships, and update the App Store privacy label.</p>
 <h2>Contact</h2>
 <p>Email us at <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a>. See also <a href="https://yuzastudios.com/receiptly/support/">https://yuzastudios.com/receiptly/support/</a>.</p>
 """.strip()
@@ -329,7 +331,8 @@ APPS = [
     },
     {
         "slug": "receiptly",
-        "name": "Receiptly",
+        "name": "Pocketslip",
+        "formerly": "Receiptly",  # 1.1 rename; path/slug stay /receiptly/ this version
         "mark": "RC",
         "blurb": "Snap receipts and keep your spending organised.",
         "summary": "Snap receipts and keep your spending organised.",
@@ -745,9 +748,12 @@ def indent(block: str, spaces: int = 6) -> str:
     return "\n".join(pad + line if line else "" for line in block.strip().splitlines())
 
 
-def support_article(name: str) -> str:
+def support_article(name: str, formerly: str | None = None) -> str:
+    # Pocketslip 1.1 (Legal POCKETSLIP-WEB-SUPPORT-PAGE-DRAFT-2026-11-13): one visible "previously called" line.
+    former = (f"\n<p>{esc(name)} was previously called {esc(formerly)}. It's the same app from the same studio.</p>"
+              if formerly else "")
     return f"""
-<h1>{esc(name)} — Support</h1>
+<h1>{esc(name)} — Support</h1>{former}
 <p><strong>Email:</strong> <a href="mailto:support@yuzastudios.com">support@yuzastudios.com</a></p>
 <p><strong>Phone:</strong> +1 587-858-4643 (business line)</p>
 <p>YuZa Studio is the studio name of Clay Cavanagh. On the App Store, our apps are listed under the seller name “Clay Cavanagh”.</p>
@@ -1085,14 +1091,15 @@ def build(dest: Path) -> None:
                         ("Support", None),
                     ]
                 ),
-                f'<article class="prose">\n{indent(support_article(app["name"]), 2)}\n      </article>',
+                f'<article class="prose">\n{indent(support_article(app["name"], app.get("formerly")), 2)}\n      </article>',
             ]
         )
         write(
             dest / app["slug"] / "support" / "index.html",
             chrome(
                 title=f"{app['name']} — Support · YuZa Studio",
-                description=f"Support for {app['name']}. Email support@yuzastudios.com.",
+                description=(f"Support for {app['name']} (formerly {app['formerly']}). Email support@yuzastudios.com."
+                             if app.get("formerly") else f"Support for {app['name']}. Email support@yuzastudios.com."),
                 canonical_path=f"{app['slug']}/support/",
                 depth=2,
                 current=None,

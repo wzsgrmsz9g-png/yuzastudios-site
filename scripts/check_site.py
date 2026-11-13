@@ -336,11 +336,14 @@ def check_legal() -> None:
         "upload progress or recordings",
     ]
     receipt_bits = [
-        "Effective date:</strong> 1 November 2026",
-        "Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",
-        "Receiptly reads your receipts <strong>on your iPhone</strong>.",
-        "Receiptly Pro subscriptions are not shared through Family Sharing.",
-        "Receiptly makes no network requests of its own.",
+        # Pocketslip 1.1 (Legal POCKETSLIP-WEB-PRIVACY-PAGE-DRAFT-2026-11-13): date placeholder until 1.1 go-live.
+        "Effective date:</strong> [[EFFECTIVE DATE: set on 1.1 go-live]]",
+        "Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",
+        "Pocketslip reads your receipts <strong>on your iPhone</strong>.",
+        "Pocketslip Pro subscriptions are not shared through Family Sharing.",
+        "Pocketslip makes no network requests of its own.",
+        "The Write a review link in Settings opens Pocketslip's page in the App Store",
+        "reportaproblem.apple.com (<a href=\"https://reportaproblem.apple.com/\">https://reportaproblem.apple.com/</a>).",
     ]
     atlas_bits = [
         "Effective date:</strong> 7 October 2026",
@@ -360,9 +363,16 @@ def check_legal() -> None:
             if bit not in text:
                 fail(f"{label} privacy missing ported text: {bit}")
 
+    rsupport = (ROOT / "receiptly" / "support" / "index.html").read_text(encoding="utf-8")
+    for bit in ("<h1>Pocketslip — Support</h1>",
+                "Pocketslip was previously called Receiptly. It's the same app from the same studio.",
+                "Support for Pocketslip (formerly Receiptly). Email support@yuzastudios.com.",
+                '<a href="../privacy/">Pocketslip privacy</a>'):
+        if bit not in rsupport:
+            fail(f"receiptly support missing Pocketslip 1.1 text: {bit}")
     if "processed by Apple" in atlas or "in-app purchase" in atlas.lower():
         fail("Little Atlas privacy gained purchase language")
-    seller_lines = ("Receiptly is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",)
+    seller_lines = ("Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",)
     for label, text in (("receiptly", receipt), ("cantotalk", canto)):
         for line in seller_lines:
             text = text.replace(line, "")
@@ -382,7 +392,7 @@ def check_legal() -> None:
         "Forge Strength privacy",
         "Little Atlas privacy",
         "CantoTalk privacy",
-        "Receiptly privacy",
+        "Pocketslip privacy",
         "ChromaClear privacy",
     ]
     for bit in support_bits:
