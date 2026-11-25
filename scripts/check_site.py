@@ -445,6 +445,8 @@ def check_deploy_files() -> None:
         "https://yuzastudios.com/chromaclear/support/",
         "https://yuzastudios.com/privacy/",
         "https://yuzastudios.com/support/",
+        "https://yuzastudios.com/swirlbud/privacy/",
+        "https://yuzastudios.com/swirlbud/support/",
     ):
         if path not in sitemap:
             fail(f"sitemap missing {path}")

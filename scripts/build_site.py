@@ -20,6 +20,8 @@ from pathlib import Path
 HOST = "yuzastudios.com"
 ROOT = Path(__file__).resolve().parents[1]
 SITEMAP_DATE = "2026-10-15"
+# Hand-built pages that this script does not generate but the sitemap lists. No lastmod until their publish date is set.
+EXTRA_SITEMAP_PATHS = ["swirlbud/privacy/", "swirlbud/support/"]
 
 FORGE_WHAT = (
     "Forge Strength is a strength-training companion for iPhone and Apple Watch. "
@@ -1126,8 +1128,8 @@ def build(dest: Path) -> None:
     )
 
     locs = "\n".join(
-        f"  <url><loc>https://{HOST}/{path}</loc><lastmod>{SITEMAP_DATE}</lastmod></url>"
-        for path in page_paths()
+        [f"  <url><loc>https://{HOST}/{path}</loc><lastmod>{SITEMAP_DATE}</lastmod></url>" for path in page_paths()]
+        + [f"  <url><loc>https://{HOST}/{path}</loc></url>" for path in EXTRA_SITEMAP_PATHS]
     )
     write(
         dest / "sitemap.xml",
