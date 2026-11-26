@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import html
 import importlib.util
 import json
 import re
@@ -55,6 +57,9 @@ class PageParser(HTMLParser):
         self.skip = False
         self.lang = False
         self.script_srcs: list[str | None] = []
+        self.inline_scripts: list[str] = []
+        self._in_inline_script = False
+        self._script_buf: list[str] = []
         self.iframes = 0
         self.imgs_missing_alt: list[str] = []
         self.imgs: list[dict[str, str | None]] = []
@@ -70,7 +75,11 @@ class PageParser(HTMLParser):
         if tag == "main":
             self.main = True
         if tag == "script":
-            self.script_srcs.append(data.get("src"))
+            src = data.get("src")
+            self.script_srcs.append(src)
+            if src is None:
+                self._in_inline_script = True
+                self._script_buf = []
         if tag == "iframe":
             self.iframes += 1
         if tag == "img":
@@ -84,6 +93,16 @@ class PageParser(HTMLParser):
                 self.skip = True
         if tag == "link" and data.get("rel") == "stylesheet" and data.get("href"):
             self.css.append(data["href"])
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "script" and self._in_inline_script:
+            self.inline_scripts.append("".join(self._script_buf))
+            self._in_inline_script = False
+            self._script_buf = []
+
+    def handle_data(self, data: str) -> None:
+        if self._in_inline_script:
+            self._script_buf.append(data)
 
 
 def resolve_href(page: Path, href: str, root: Path) -> Path | None:
@@ -177,7 +196,7 @@ def check_generated(module) -> None:
 
 
 def check_pages() -> list[Path]:
-    slugs = ["forge", "cantotalk", "littleatlas", "receiptly", "chromaclear"]
+    slugs = ["forge", "cantotalk", "littleatlas", "pocketslip", "receiptly", "chromaclear"]
     expected = [
         ROOT / "index.html",
         ROOT / "404.html",
@@ -203,6 +222,9 @@ def check_pages() -> list[Path]:
         expected.append(ROOT / slug / "index.html")
         expected.append(ROOT / slug / "privacy" / "index.html")
         expected.append(ROOT / slug / "support" / "index.html")
+    for extra in (ROOT / "swirlbud" / "privacy" / "index.html", ROOT / "swirlbud" / "support" / "index.html"):
+        if not extra.exists():
+            fail(f"missing {extra.relative_to(ROOT)}")
     pages = []
     for path in expected:
         if not path.exists():
@@ -244,14 +266,43 @@ def check_html(pages: list[Path]) -> None:
             fail(f"{rel} missing skip link")
         if parser.iframes:
             fail(f"{rel} has an iframe")
-        if len(parser.script_srcs) != 1 or not (parser.script_srcs[0] or "").endswith("js/site.js"):
+        ext_scripts = [s for s in parser.script_srcs if s is not None]
+        inline_count = len(parser.script_srcs) - len(ext_scripts)
+        if len(ext_scripts) != 1 or not ext_scripts[0].endswith("js/site.js"):
             fail(f"{rel} must load only js/site.js, found {parser.script_srcs}")
-        elif (parser.script_srcs[0] or "").startswith(("http://", "https://", "//")):
+        elif ext_scripts[0].startswith(("http://", "https://", "//")):
             fail(f"{rel} loads a remote script")
         else:
-            script_target = resolve_href(page, parser.script_srcs[0] or "", ROOT)
+            script_target = resolve_href(page, ext_scripts[0], ROOT)
             if script_target is None or not script_target.exists():
-                fail(f"{rel} missing local script {parser.script_srcs[0]}")
+                fail(f"{rel} missing local script {ext_scripts[0]}")
+        if rel == "pocketslip/index.html":
+            if inline_count != 1 or len(parser.inline_scripts) != 1:
+                fail(f"{rel} must have exactly one inline ct script, found {inline_count}")
+            else:
+                inline_js = parser.inline_scripts[0]
+                for need in ("URLSearchParams", "/^[a-z0-9-]{2,40}$/", "id6820168505?pt=119193405&ct="):
+                    if need not in inline_js:
+                        fail(f"{rel} inline script missing {need}")
+                for banned in (
+                    "document.cookie",
+                    "localStorage",
+                    "sessionStorage",
+                    "indexedDB",
+                    "sendBeacon",
+                    "fetch(",
+                    "XMLHttpRequest",
+                    "fbq",
+                    "gtag",
+                    "location.replace",
+                    "location.assign",
+                    "location.href",
+                    "window.open",
+                ):
+                    if banned in inline_js:
+                        fail(f"{rel} inline script contains banned API {banned}")
+        elif inline_count:
+            fail(f"{rel} must not contain inline scripts, found {inline_count}")
         if parser.imgs_missing_alt:
             fail(f"{rel} images missing alt")
         for img in parser.imgs:
@@ -309,6 +360,7 @@ def check_legal() -> None:
     canto = (ROOT / "cantotalk" / "privacy" / "index.html").read_text(encoding="utf-8")
     atlas = (ROOT / "littleatlas" / "privacy" / "index.html").read_text(encoding="utf-8")
     receipt = (ROOT / "receiptly" / "privacy" / "index.html").read_text(encoding="utf-8")
+    pocketslip_priv = (ROOT / "pocketslip" / "privacy" / "index.html").read_text(encoding="utf-8")
     chroma = (ROOT / "chromaclear" / "privacy" / "index.html").read_text(encoding="utf-8")
     support = (ROOT / "support" / "index.html").read_text(encoding="utf-8")
 
@@ -358,22 +410,29 @@ def check_legal() -> None:
         ("cantotalk", canto, canto_bits),
         ("littleatlas", atlas, atlas_bits),
         ("receiptly", receipt, receipt_bits),
+        ("pocketslip", pocketslip_priv, receipt_bits),
     ):
         for bit in bits:
             if bit not in text:
                 fail(f"{label} privacy missing ported text: {bit}")
 
-    rsupport = (ROOT / "receiptly" / "support" / "index.html").read_text(encoding="utf-8")
-    for bit in ("<h1>Pocketslip — Support</h1>",
-                "Pocketslip was previously called Receiptly. It's the same app from the same studio.",
-                "Support for Pocketslip (formerly Receiptly). Email support@yuzastudios.com.",
-                '<a href="../privacy/">Pocketslip privacy</a>'):
-        if bit not in rsupport:
-            fail(f"receiptly support missing Pocketslip 1.1 text: {bit}")
+    for label, spath in (
+        ("receiptly", ROOT / "receiptly" / "support" / "index.html"),
+        ("pocketslip", ROOT / "pocketslip" / "support" / "index.html"),
+    ):
+        rsupport = spath.read_text(encoding="utf-8")
+        for bit in (
+            "<h1>Pocketslip — Support</h1>",
+            "Pocketslip was previously called Receiptly. It's the same app from the same studio.",
+            "Support for Pocketslip (formerly Receiptly). Email support@yuzastudios.com.",
+            '<a href="../privacy/">Pocketslip privacy</a>',
+        ):
+            if bit not in rsupport:
+                fail(f"{label} support missing Pocketslip 1.1 text: {bit}")
     if "processed by Apple" in atlas or "in-app purchase" in atlas.lower():
         fail("Little Atlas privacy gained purchase language")
     seller_lines = ("Pocketslip (formerly called Receiptly) is published by YuZa Studio, the studio name of Clay Cavanagh (the App Store seller).",)
-    for label, text in (("receiptly", receipt), ("cantotalk", canto)):
+    for label, text in (("receiptly", receipt), ("pocketslip", pocketslip_priv), ("cantotalk", canto)):
         for line in seller_lines:
             text = text.replace(line, "")
         for bad in ("has not been published", "14.99", "Clay Cavanagh", "clam.app", "[CONFIRM", "governing law", "+1 587"):
@@ -451,7 +510,12 @@ def check_deploy_files() -> None:
         "https://yuzastudios.com/forge/privacy/",
         "https://yuzastudios.com/cantotalk/support/",
         "https://yuzastudios.com/littleatlas/",
+        "https://yuzastudios.com/pocketslip/",
+        "https://yuzastudios.com/pocketslip/privacy/",
+        "https://yuzastudios.com/pocketslip/support/",
+        "https://yuzastudios.com/receiptly/",
         "https://yuzastudios.com/receiptly/privacy/",
+        "https://yuzastudios.com/receiptly/support/",
         "https://yuzastudios.com/chromaclear/support/",
         "https://yuzastudios.com/privacy/",
         "https://yuzastudios.com/support/",
@@ -470,7 +534,7 @@ def is_live(item: dict) -> bool:
 def check_store(module) -> None:
     store = json.loads((ROOT / "data" / "apps.json").read_text(encoding="utf-8"))
     slugs = [item["slug"] for item in store["apps"]]
-    if slugs != ["forge", "cantotalk", "littleatlas", "receiptly", "chromaclear"]:
+    if slugs != ["forge", "cantotalk", "littleatlas", "pocketslip", "chromaclear"]:
         fail(f"apps.json slugs changed: {slugs}")
     badge_path = ROOT / store["badge"]["src"]
     if not badge_path.exists():
@@ -487,14 +551,17 @@ def check_store(module) -> None:
             "forge": "icons/forge.webp",
             "cantotalk": "icons/cantotalk.webp",
             "littleatlas": "icons/little-atlas.webp",
-            "receiptly": "icons/receiptly.webp",
+            "pocketslip": "icons/receiptly.webp",
             "chromaclear": "icons/chroma-clear.webp",
         }[item["slug"]]
         if icon not in page or icon not in home:
             fail(f"{item['slug']} icon missing from the app page or home")
         if is_live(item):
-            url = f"https://apps.apple.com/app/id{item['appleId']}"
-            if url not in page or "Download on the App Store" not in page:
+            expected_urls = [f"https://apps.apple.com/app/id{item['appleId']}"]
+            if item["slug"] == "pocketslip":
+                raw_url = f"https://apps.apple.com/app/apple-store/id{item['appleId']}?pt=119193405&ct=yuzastudios-web&mt=8"
+                expected_urls = [html.escape(raw_url, quote=True)]
+            if not any(u in page for u in expected_urls) or "Download on the App Store" not in page:
                 fail(f"{item['slug']} live badge missing")
             if "Coming soon to the App Store" in page:
                 fail(f"{item['slug']} is live and still says coming soon")
@@ -567,8 +634,10 @@ def check_motion() -> None:
     if "frame-device" in forge or "frame-plate" not in forge:
         fail("Forge screenshots must sit on a plate, not inside a phone frame")
     receipt = (ROOT / "receiptly" / "index.html").read_text(encoding="utf-8")
-    if "frame-device" in receipt or "frame-plate" in receipt:
-        fail("Receiptly should show the icon and coming soon label only")
+    pocketslip = (ROOT / "pocketslip" / "index.html").read_text(encoding="utf-8")
+    for label, html_text in (("receiptly", receipt), ("pocketslip", pocketslip)):
+        if "frame-device" in html_text or "frame-plate" in html_text:
+            fail(f"{label} should not render old store posters")
     canto = (ROOT / "cantotalk" / "index.html").read_text(encoding="utf-8")
     if canto.count("frame-device") < 5:
         fail("CantoTalk gallery is missing phone frames")
@@ -602,13 +671,41 @@ def check_positioning() -> None:
     if "Discover family-friendly places, playgrounds and nursing rooms wherever you are." not in home:
         fail("home card is missing the Little Atlas tagline")
     receipt = (ROOT / "receiptly" / "index.html").read_text(encoding="utf-8")
+    pocketslip = (ROOT / "pocketslip" / "index.html").read_text(encoding="utf-8")
     chroma = (ROOT / "chromaclear" / "index.html").read_text(encoding="utf-8")
-    if "Snap receipts and keep your spending organised." not in receipt:
-        fail("Receiptly description was not updated")
+    toby_copy = (
+        "Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF. "
+        "No Pocketslip account, no bank link. Free to download (15 scans/mo); "
+        "Pro subscription for unlimited scans."
+    )
+    if toby_copy not in pocketslip:
+        fail("Pocketslip landing page is missing the verbatim Toby-cleared copy")
+    if toby_copy not in receipt:
+        fail("Receiptly legacy page is missing the verbatim Pocketslip copy")
     if "A bright, satisfying colour-matching puzzle game." not in chroma:
         fail("ChromaClear description was not updated")
-    if "has not been published yet" in receipt or "has not been published yet" in chroma:
+    if "has not been published yet" in receipt or "has not been published yet" in pocketslip or "has not been published yet" in chroma:
         fail("placeholder product description is still on an app page")
+    check_pocketslip()
+
+
+def check_pocketslip() -> None:
+    if (ROOT / "assets" / "apps" / "receiptly").exists():
+        fail("old store posters directory assets/apps/receiptly must not exist")
+    icon_path = ROOT / "assets" / "apps" / "icons" / "receiptly.webp"
+    expected_sha = "0898c25601fe121431d91d6c42cb251ecee1da3b28b941a90db377bd96a76690"
+    actual_sha = hashlib.sha256(icon_path.read_bytes()).hexdigest()
+    if actual_sha != expected_sha:
+        fail(f"Pocketslip icon sha256 changed: {actual_sha} != {expected_sha}")
+    banned_terms = ("Costco", "Tim Hortons", "Amazon.ca", "Canadian Tire", "Home Depot", "Gmail")
+    for page in sorted(ROOT.rglob("*.html")):
+        text = page.read_text(encoding="utf-8")
+        rel = str(page.relative_to(ROOT))
+        for term in banned_terms:
+            if re.search(re.escape(term), text, re.IGNORECASE):
+                fail(f"{rel} contains banned brand/claim: {term}")
+        if 'href="../receiptly/"' in text or 'href="../../receiptly/"' in text or 'href="/receiptly/"' in text or 'href="receiptly/"' in text:
+            fail(f"{rel} still links nav/footer/card to receiptly/ instead of pocketslip/")
 
 
 def main() -> int:

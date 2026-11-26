@@ -38,6 +38,14 @@ CANTO_WHAT = (
 ATLAS_WHAT = (
     "Discover family-friendly places, playgrounds and nursing rooms wherever you are."
 )
+POCKETSLIP_LANDING_COPY = (
+    "Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF. "
+    "No Pocketslip account, no bank link. Free to download (15 scans/mo); "
+    "Pro subscription for unlimited scans."
+)
+POCKETSLIP_STORE_BASE = "https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&ct="
+POCKETSLIP_STORE_DEFAULT_CT = "yuzastudios-web"
+POCKETSLIP_STORE_DEFAULT_URL = f"{POCKETSLIP_STORE_BASE}{POCKETSLIP_STORE_DEFAULT_CT}&mt=8"
 
 FORGE_PRIVACY = """
 <h1>Forge Strength — Privacy Policy</h1>
@@ -330,16 +338,18 @@ APPS = [
         "published": True,
     },
     {
-        "slug": "receiptly",
+        "slug": "pocketslip",
+        "legacy_slug": "receiptly",
         "name": "Pocketslip",
-        "formerly": "Receiptly",  # 1.1 rename; path/slug stay /receiptly/ this version
-        "mark": "RC",
-        "blurb": "Snap receipts and keep your spending organised.",
-        "summary": "Snap receipts and keep your spending organised.",
+        "formerly": "Receiptly",
+        "mark": "PS",
+        "blurb": "Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF.",
+        "summary": POCKETSLIP_LANDING_COPY,
         "privacy": RECEIPTLY_PRIVACY,
         "published": True,
         "described": True,
         "hide_seller_footer": True,
+        "landing": True,
     },
     {
         "slug": "chromaclear",
@@ -463,7 +473,7 @@ MEDIA = {
             },
         ],
     },
-    "receiptly": {
+    "pocketslip": {
         "icon": "assets/apps/icons/receiptly.webp",
         "frame": "device",
         "card_shot": 0,
@@ -778,6 +788,35 @@ def unpublished_privacy(name: str) -> str:
 """.strip()
 
 
+def pocketslip_landing_article(app: dict, prefix: str) -> str:
+    icon_src = href(prefix, MEDIA[app["slug"]]["icon"])
+    badge = STORE["badge"]
+    badge_src = href(prefix, badge["src"])
+    return f"""
+<article class="landing-page">
+  <header class="landing-hero">
+    <img class="landing-icon" src="{esc(icon_src)}" alt="" width="512" height="512" fetchpriority="high" decoding="async">
+    <h1>{esc(app["name"])}</h1>
+    <p class="landing-copy">{esc(POCKETSLIP_LANDING_COPY)}</p>
+    <a class="store-badge landing-cta" data-pocketslip-store="1" href="{esc(POCKETSLIP_STORE_DEFAULT_URL)}"><img src="{esc(badge_src)}" alt="Download on the App Store" width="{int(badge["width"])}" height="{int(badge["height"])}" decoding="async"></a>
+  </header>
+  <ul class="page-links landing-links">
+    <li><a href="privacy/">Privacy policy</a></li>
+    <li><a href="support/">Support</a></li>
+  </ul>
+</article>
+<script>
+(function () {{
+  var ct = new URLSearchParams(location.search).get("ct");
+  if (!ct || !/^[a-z0-9-]{{2,40}}$/.test(ct)) return;
+  var url = "{POCKETSLIP_STORE_BASE}" + ct + "&mt=8";
+  var links = document.querySelectorAll("a[data-pocketslip-store]");
+  for (var i = 0; i < links.length; i++) links[i].href = url;
+}})();
+</script>
+""".strip()
+
+
 def app_article(app: dict, prefix: str) -> str:
     media = MEDIA[app["slug"]]
     extra = ""
@@ -969,6 +1008,11 @@ def page_paths() -> list[str]:
         paths.append(f"{app['slug']}/")
         paths.append(f"{app['slug']}/privacy/")
         paths.append(f"{app['slug']}/support/")
+        legacy = app.get("legacy_slug")
+        if legacy:
+            paths.append(f"{legacy}/")
+            paths.append(f"{legacy}/privacy/")
+            paths.append(f"{legacy}/support/")
     return paths
 
 
@@ -1026,6 +1070,11 @@ def build(dest: Path) -> None:
 
     for app in APPS:
         app_prefix = prefix_for(1)
+        main_article = (
+            pocketslip_landing_article(app, app_prefix)
+            if app.get("landing")
+            else app_article(app, app_prefix)
+        )
         app_body = "\n".join(
             [
                 crumbs(
@@ -1034,7 +1083,7 @@ def build(dest: Path) -> None:
                         (app["name"], None),
                     ]
                 ),
-                app_article(app, app_prefix),
+                main_article,
             ]
         )
         write(
@@ -1094,18 +1143,70 @@ def build(dest: Path) -> None:
                 f'<article class="prose">\n{indent(support_article(app["name"], app.get("formerly")), 2)}\n      </article>',
             ]
         )
+        support_description = (
+            f"Support for {app['name']} (formerly {app['formerly']}). Email support@yuzastudios.com."
+            if app.get("formerly")
+            else f"Support for {app['name']}. Email support@yuzastudios.com."
+        )
         write(
             dest / app["slug"] / "support" / "index.html",
             chrome(
                 title=f"{app['name']} — Support · YuZa Studio",
-                description=(f"Support for {app['name']} (formerly {app['formerly']}). Email support@yuzastudios.com."
-                             if app.get("formerly") else f"Support for {app['name']}. Email support@yuzastudios.com."),
+                description=support_description,
                 canonical_path=f"{app['slug']}/support/",
                 depth=2,
                 current=None,
                 body=indent(app_support, 6),
             ),
         )
+
+        legacy = app.get("legacy_slug")
+        if legacy:
+            legacy_app_body = "\n".join(
+                [
+                    crumbs(
+                        [
+                            ("Home", href(app_prefix, "")),
+                            (app["name"], None),
+                        ]
+                    ),
+                    app_article(app, app_prefix),
+                ]
+            )
+            write(
+                dest / legacy / "index.html",
+                chrome(
+                    title=f"{app['name']} · YuZa Studio",
+                    description=app["summary"],
+                    canonical_path=f"{app['slug']}/",
+                    depth=1,
+                    current=app["slug"],
+                    body=indent(legacy_app_body, 6),
+                ),
+            )
+            write(
+                dest / legacy / "privacy" / "index.html",
+                chrome(
+                    title=f"{app['name']} — Privacy Policy · YuZa Studio",
+                    description=privacy_description,
+                    canonical_path=f"{legacy}/privacy/",
+                    depth=2,
+                    current=None,
+                    body=indent(policy_body, 6),
+                    seller_footer=not app.get("hide_seller_footer", False),
+                ),
+            )
+            write(
+                dest / legacy / "support" / "index.html",
+                chrome(
+                    title=f"{app['name']} — Support · YuZa Studio",
+                    description=support_description,
+                    canonical_path=f"{legacy}/support/",
+                    depth=2,
+                    current=None,
+                    body=indent(app_support, 6),
+                ),
+            )
 
     not_found = "\n".join(
         [
