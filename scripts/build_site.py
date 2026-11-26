@@ -650,6 +650,8 @@ def chrome(
     absolute: bool = False,
     noindex: bool = False,
     seller_footer: bool = True,
+    apple_itunes_app_id: str | None = None,
+    top_banner: str = "",
 ) -> str:
     prefix = prefix_for(depth, absolute)
     home = href(prefix, "")
@@ -684,6 +686,12 @@ def chrome(
     footer_html = "\n          ".join(footer_links)
 
     robots = '\n  <meta name="robots" content="noindex">' if noindex else ""
+    smart_banner = (
+        f'\n  <meta name="apple-itunes-app" content="app-id={esc(apple_itunes_app_id)}">'
+        if apple_itunes_app_id
+        else ""
+    )
+    banner_block = f"\n{top_banner}" if top_banner else ""
     canonical = f"https://{HOST}/{canonical_path}"
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -691,7 +699,7 @@ def chrome(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="{esc(description)}">
-  <meta name="theme-color" content="#1B2440">
+  <meta name="theme-color" content="#1B2440">{smart_banner}
   <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(description)}">
   <meta property="og:url" content="{esc(canonical)}">
@@ -712,7 +720,7 @@ def chrome(
   <script src="{esc(script)}" defer></script>
 </head>
 <body>
-  <a class="skip" href="#content">Skip to content</a>
+  <a class="skip" href="#content">Skip to content</a>{banner_block}
   <div class="stripe" aria-hidden="true"></div>
   <header class="site-header">
     <div class="wrap bar">
@@ -788,6 +796,21 @@ def unpublished_privacy(name: str) -> str:
 """.strip()
 
 
+def pocketslip_top_banner(app: dict, prefix: str) -> str:
+    icon_src = href(prefix, MEDIA[app["slug"]]["icon"])
+    return f"""  <aside class="install-banner" aria-label="Download {esc(app["name"])} on the App Store">
+    <div class="wrap install-banner-inner">
+      <button type="button" class="install-banner-close" aria-label="Dismiss {esc(app["name"])} app banner">&times;</button>
+      <img class="install-banner-icon" src="{esc(icon_src)}" alt="" width="512" height="512" decoding="async">
+      <div class="install-banner-copy">
+        <span class="install-banner-title">{esc(app["name"])}</span>
+        <span class="install-banner-sub">Free on the App Store</span>
+      </div>
+      <a class="install-banner-cta" data-app-store-link="1" data-pocketslip-store="1" href="{esc(POCKETSLIP_STORE_DEFAULT_URL)}">GET</a>
+    </div>
+  </aside>"""
+
+
 def pocketslip_landing_article(app: dict, prefix: str) -> str:
     icon_src = href(prefix, MEDIA[app["slug"]]["icon"])
     badge = STORE["badge"]
@@ -798,7 +821,7 @@ def pocketslip_landing_article(app: dict, prefix: str) -> str:
     <img class="landing-icon" src="{esc(icon_src)}" alt="" width="512" height="512" fetchpriority="high" decoding="async">
     <h1>{esc(app["name"])}</h1>
     <p class="landing-copy">{esc(POCKETSLIP_LANDING_COPY)}</p>
-    <a class="store-badge landing-cta" data-pocketslip-store="1" href="{esc(POCKETSLIP_STORE_DEFAULT_URL)}"><img src="{esc(badge_src)}" alt="Download on the App Store" width="{int(badge["width"])}" height="{int(badge["height"])}" decoding="async"></a>
+    <a class="store-badge landing-cta" data-app-store-link="1" data-pocketslip-store="1" href="{esc(POCKETSLIP_STORE_DEFAULT_URL)}"><img src="{esc(badge_src)}" alt="Download on the App Store" width="{int(badge["width"])}" height="{int(badge["height"])}" decoding="async"></a>
   </header>
   <ul class="page-links landing-links">
     <li><a href="privacy/">Privacy policy</a></li>
@@ -808,10 +831,18 @@ def pocketslip_landing_article(app: dict, prefix: str) -> str:
 <script>
 (function () {{
   var ct = new URLSearchParams(location.search).get("ct");
-  if (!ct || !/^[a-z0-9-]{{2,40}}$/.test(ct)) return;
-  var url = "{POCKETSLIP_STORE_BASE}" + ct + "&mt=8";
-  var links = document.querySelectorAll("a[data-pocketslip-store]");
-  for (var i = 0; i < links.length; i++) links[i].href = url;
+  if (ct && /^[a-z0-9-]{{2,40}}$/.test(ct)) {{
+    var url = "{POCKETSLIP_STORE_BASE}" + ct + "&mt=8";
+    var links = document.querySelectorAll("a[data-app-store-link]");
+    for (var i = 0; i < links.length; i++) links[i].href = url;
+  }}
+  var closeBtn = document.querySelector(".install-banner-close");
+  var banner = document.querySelector(".install-banner");
+  if (closeBtn && banner) {{
+    closeBtn.addEventListener("click", function () {{
+      banner.hidden = true;
+    }});
+  }}
 }})();
 </script>
 """.strip()
@@ -1070,11 +1101,15 @@ def build(dest: Path) -> None:
 
     for app in APPS:
         app_prefix = prefix_for(1)
+        is_landing = bool(app.get("landing"))
         main_article = (
             pocketslip_landing_article(app, app_prefix)
-            if app.get("landing")
+            if is_landing
             else app_article(app, app_prefix)
         )
+        app_meta = STORE_BY_SLUG[app["slug"]]
+        banner_app_id = str(app_meta["appleId"]) if is_landing and app_meta.get("appleId") else None
+        banner_html = pocketslip_top_banner(app, app_prefix) if is_landing else ""
         app_body = "\n".join(
             [
                 crumbs(
@@ -1095,6 +1130,8 @@ def build(dest: Path) -> None:
                 depth=1,
                 current=app["slug"],
                 body=indent(app_body, 6),
+                apple_itunes_app_id=banner_app_id,
+                top_banner=banner_html,
             ),
         )
 
@@ -1170,7 +1207,7 @@ def build(dest: Path) -> None:
                             (app["name"], None),
                         ]
                     ),
-                    app_article(app, app_prefix),
+                    main_article,
                 ]
             )
             write(
@@ -1182,6 +1219,8 @@ def build(dest: Path) -> None:
                     depth=1,
                     current=app["slug"],
                     body=indent(legacy_app_body, 6),
+                    apple_itunes_app_id=banner_app_id,
+                    top_banner=banner_html,
                 ),
             )
             write(

@@ -124,6 +124,107 @@ img {
   transform: none;
 }
 
+.install-banner {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top);
+}
+
+.install-banner[hidden] {
+  display: none;
+}
+
+.install-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 58px;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+}
+
+.install-banner-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  margin-left: -0.55rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.install-banner-close:hover {
+  color: var(--ink);
+}
+
+.install-banner-icon {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 22%;
+  background: #fff;
+  object-fit: cover;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(28, 25, 22, 0.08);
+}
+
+.install-banner-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
+
+.install-banner-title,
+.install-banner-sub {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.install-banner-title {
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.install-banner-sub {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.25;
+}
+
+.install-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.35rem 1.05rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  flex: none;
+}
+
+.install-banner-cta:hover {
+  filter: brightness(1.06);
+}
+
 .stripe {
   height: 6px;
   background: linear-gradient(
@@ -856,6 +957,10 @@ main:focus {
 }
 
 @media (min-width: 48rem) {
+  .install-banner {
+    display: none;
+  }
+
   .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12.75rem, 1fr));
@@ -1055,6 +1160,8 @@ main:focus {
 @media (forced-colors: active) {
   .app-icon,
   .landing-icon,
+  .install-banner-icon,
+  .install-banner-cta,
   .app-card,
   .landing-hero,
   .notice,
@@ -1087,6 +1194,7 @@ main:focus {
 
 @media print {
   .skip,
+  .install-banner,
   .stripe,
   .nav,
   .site-footer,

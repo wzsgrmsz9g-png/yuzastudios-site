@@ -276,12 +276,18 @@ def check_html(pages: list[Path]) -> None:
             script_target = resolve_href(page, ext_scripts[0], ROOT)
             if script_target is None or not script_target.exists():
                 fail(f"{rel} missing local script {ext_scripts[0]}")
-        if rel == "pocketslip/index.html":
+        if rel in ("pocketslip/index.html", "receiptly/index.html"):
             if inline_count != 1 or len(parser.inline_scripts) != 1:
-                fail(f"{rel} must have exactly one inline ct script, found {inline_count}")
+                fail(f"{rel} must have exactly one inline ct/banner script, found {inline_count}")
             else:
                 inline_js = parser.inline_scripts[0]
-                for need in ("URLSearchParams", "/^[a-z0-9-]{2,40}$/", "id6820168505?pt=119193405&ct="):
+                for need in (
+                    "URLSearchParams",
+                    "/^[a-z0-9-]{2,40}$/",
+                    "id6820168505?pt=119193405&ct=",
+                    "data-app-store-link",
+                    ".install-banner-close",
+                ):
                     if need not in inline_js:
                         fail(f"{rel} inline script missing {need}")
                 for banned in (
@@ -706,6 +712,35 @@ def check_pocketslip() -> None:
                 fail(f"{rel} contains banned brand/claim: {term}")
         if 'href="../receiptly/"' in text or 'href="../../receiptly/"' in text or 'href="/receiptly/"' in text or 'href="receiptly/"' in text:
             fail(f"{rel} still links nav/footer/card to receiptly/ instead of pocketslip/")
+        if rel in ("pocketslip/index.html", "receiptly/index.html"):
+            if '<meta name="apple-itunes-app" content="app-id=6820168505">' not in text:
+                fail(f"{rel} missing Safari Smart App Banner meta tag")
+            for bit in (
+                'class="install-banner"',
+                'class="install-banner-close"',
+                "Free on the App Store",
+                ">GET</a>",
+            ):
+                if bit not in text:
+                    fail(f"{rel} missing mobile install banner markup: {bit}")
+            default_href = html.escape(
+                "https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&ct=yuzastudios-web&mt=8",
+                quote=True,
+            )
+            if text.count('data-app-store-link="1"') < 2:
+                fail(f"{rel} must tag both top banner GET and main badge with data-app-store-link")
+            if text.count(default_href) < 2:
+                fail(f"{rel} must set default campaign href on both top banner GET and main badge")
+        else:
+            if "apple-itunes-app" in text or 'class="install-banner"' in text:
+                fail(f"{rel} should not carry the Pocketslip install banner")
+    css = (ROOT / "css" / "site.css").read_text(encoding="utf-8")
+    if ".install-banner[hidden]" not in css or not re.search(
+        r"@media \(min-width: 48rem\) \{[^}]*\.install-banner \{\s*display: none;",
+        css,
+        re.S,
+    ):
+        fail("CSS missing mobile-only hide rule for .install-banner")
 
 
 def main() -> int:

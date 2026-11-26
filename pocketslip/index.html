@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF. No Pocketslip account, no bank link. Free to download (15 scans/mo); Pro subscription for unlimited scans.">
   <meta name="theme-color" content="#1B2440">
+  <meta name="apple-itunes-app" content="app-id=6820168505">
   <meta property="og:title" content="Pocketslip · YuZa Studio">
   <meta property="og:description" content="Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF. No Pocketslip account, no bank link. Free to download (15 scans/mo); Pro subscription for unlimited scans.">
   <meta property="og:url" content="https://yuzastudios.com/pocketslip/">
@@ -26,6 +27,17 @@
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>
+  <aside class="install-banner" aria-label="Download Pocketslip on the App Store">
+    <div class="wrap install-banner-inner">
+      <button type="button" class="install-banner-close" aria-label="Dismiss Pocketslip app banner">&times;</button>
+      <img class="install-banner-icon" src="../assets/apps/icons/receiptly.webp" alt="" width="512" height="512" decoding="async">
+      <div class="install-banner-copy">
+        <span class="install-banner-title">Pocketslip</span>
+        <span class="install-banner-sub">Free on the App Store</span>
+      </div>
+      <a class="install-banner-cta" data-app-store-link="1" data-pocketslip-store="1" href="https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&amp;ct=yuzastudios-web&amp;mt=8">GET</a>
+    </div>
+  </aside>
   <div class="stripe" aria-hidden="true"></div>
   <header class="site-header">
     <div class="wrap bar">
@@ -54,7 +66,7 @@
           <img class="landing-icon" src="../assets/apps/icons/receiptly.webp" alt="" width="512" height="512" fetchpriority="high" decoding="async">
           <h1>Pocketslip</h1>
           <p class="landing-copy">Paper receipts, neatly organized. Scan receipts on your iPhone and export CSV or PDF. No Pocketslip account, no bank link. Free to download (15 scans/mo); Pro subscription for unlimited scans.</p>
-          <a class="store-badge landing-cta" data-pocketslip-store="1" href="https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&amp;ct=yuzastudios-web&amp;mt=8"><img src="../assets/badges/download-on-the-app-store.svg" alt="Download on the App Store" width="120" height="40" decoding="async"></a>
+          <a class="store-badge landing-cta" data-app-store-link="1" data-pocketslip-store="1" href="https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&amp;ct=yuzastudios-web&amp;mt=8"><img src="../assets/badges/download-on-the-app-store.svg" alt="Download on the App Store" width="120" height="40" decoding="async"></a>
         </header>
         <ul class="page-links landing-links">
           <li><a href="privacy/">Privacy policy</a></li>
@@ -64,10 +76,18 @@
       <script>
       (function () {
         var ct = new URLSearchParams(location.search).get("ct");
-        if (!ct || !/^[a-z0-9-]{2,40}$/.test(ct)) return;
-        var url = "https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&ct=" + ct + "&mt=8";
-        var links = document.querySelectorAll("a[data-pocketslip-store]");
-        for (var i = 0; i < links.length; i++) links[i].href = url;
+        if (ct && /^[a-z0-9-]{2,40}$/.test(ct)) {
+          var url = "https://apps.apple.com/app/apple-store/id6820168505?pt=119193405&ct=" + ct + "&mt=8";
+          var links = document.querySelectorAll("a[data-app-store-link]");
+          for (var i = 0; i < links.length; i++) links[i].href = url;
+        }
+        var closeBtn = document.querySelector(".install-banner-close");
+        var banner = document.querySelector(".install-banner");
+        if (closeBtn && banner) {
+          closeBtn.addEventListener("click", function () {
+            banner.hidden = true;
+          });
+        }
       })();
       </script>
     </div>
